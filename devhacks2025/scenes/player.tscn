@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://fqfxvpey31wk" path="res://Assets/Platformer Art Complete Pack/Base pack/Enemies/flyFly1.png" id="2_lurr2"]
 [ext_resource type="Texture2D" uid="uid://uh5imbw3f6u" path="res://Assets/Platformer Art Complete Pack/Base pack/Enemies/flyFly2.png" id="3_vqait"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2foqk"]
-size = Vector2(55, 36)
+[sub_resource type="CircleShape2D" id="CircleShape2D_g5qwl"]
+radius = 20.0111
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_sixbi"]
 animations = [{
@@ -18,17 +18,19 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [node name="Player" type="CharacterBody2D"]
+scale = Vector2(1.5, 1.5)
 script = ExtResource("1_yu4dx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_2foqk")
+shape = SubResource("CircleShape2D_g5qwl")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, 5.96046e-08)
+position = Vector2(0, 1.19209e-07)
 scale = Vector2(0.930556, 1.02778)
 sprite_frames = SubResource("SpriteFrames_sixbi")
-frame_progress = 0.0868667
+autoplay = "default"
+frame_progress = 0.807432
