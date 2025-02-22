@@ -22,6 +22,8 @@ func break_walls() -> bool:
 	for wall in _nearby_walls:
 		wall.destroy()
 	
+	_nearby_walls.clear()
+	
 	return true
 
 

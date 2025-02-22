@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://cbpxi4ho28oev"]
+
+[ext_resource type="Texture2D" uid="uid://b81l5n5ge1cfx" path="res://Assets/Platformer Art Complete Pack/Base pack/Tiles/castleHalfLeft.png" id="1_tyt13"]
+[ext_resource type="Texture2D" uid="uid://kn4meth5yj25" path="res://Assets/Platformer Art Complete Pack/Base pack/Tiles/castleHalfMid.png" id="2_ua56t"]
+[ext_resource type="Texture2D" uid="uid://dyeuhf2srrvus" path="res://Assets/Platformer Art Complete Pack/Base pack/Tiles/castleHalfRight.png" id="3_jt2mo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ij070"]
+size = Vector2(210, 70)
+
+[node name="MovablePlatform" type="AnimatableBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ij070")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_left = -105.0
+offset_top = -35.0
+offset_right = 105.0
+offset_bottom = 35.0
+theme_override_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_tyt13")
+
+[node name="TextureRect2" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("2_ua56t")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("3_jt2mo")
