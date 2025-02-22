@@ -1,10 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://cq8svxy4st51y"]
+[gd_scene load_steps=11 format=3 uid="uid://cq8svxy4st51y"]
 
 [ext_resource type="PackedScene" uid="uid://cijlev5a57oud" path="res://scenes/player.tscn" id="1_8y8fh"]
 [ext_resource type="Texture2D" uid="uid://b3g8fw5pkji1r" path="res://Assets/Platformer Art Complete Pack/Base pack/Tiles/tiles_spritesheet.png" id="2_x5rmj"]
 [ext_resource type="Script" path="res://scenes/tile_map.gd" id="3_r7fg0"]
 [ext_resource type="Texture2D" uid="uid://biaad1phgpp8c" path="res://Assets/Platformer Art Complete Pack/Candy expansion/sheet.png" id="4_52l1w"]
-[ext_resource type="PackedScene" uid="uid://caex3ht87vwat" path="res://scenes/enemy-clock.tscn" id="5_iwakr"]
+[ext_resource type="PackedScene" path="res://scenes/enemy-clock.tscn" id="5_iwakr"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_n1451"]
 
