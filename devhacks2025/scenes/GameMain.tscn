@@ -9,7 +9,6 @@
 texture = ExtResource("2_ydwhv")
 separation = Vector2i(2, 2)
 texture_region_size = Vector2i(70, 70)
-36:41/size_in_atlas = Vector2i(5, 5)
 36:41/0 = 0
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-35, -35, 35, -35, 35, 35, -35, 35)

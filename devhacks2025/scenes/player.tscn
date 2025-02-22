@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://cijlev5a57oud"]
+[gd_scene load_steps=13 format=3 uid="uid://cijlev5a57oud"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_yu4dx"]
 [ext_resource type="Texture2D" uid="uid://fqfxvpey31wk" path="res://Assets/Platformer Art Complete Pack/Base pack/Enemies/flyFly1.png" id="2_lurr2"]
 [ext_resource type="Texture2D" uid="uid://uh5imbw3f6u" path="res://Assets/Platformer Art Complete Pack/Base pack/Enemies/flyFly2.png" id="3_vqait"]
+[ext_resource type="Texture2D" uid="uid://c0qyqmefccmua" path="res://Assets/Character_Sprites/pixilart-sprite.png" id="4_1x0e8"]
 [ext_resource type="Script" path="res://components/gravity_component.gd" id="4_e2sh0"]
 [ext_resource type="Script" path="res://components/move_component.gd" id="4_ubodj"]
 [ext_resource type="Script" path="res://components/jump_component.gd" id="5_8v8c2"]
@@ -10,6 +11,10 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g5qwl"]
 radius = 20.0111
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6baog"]
+atlas = ExtResource("4_1x0e8")
+region = Rect2(26, 26, 26, 26)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_sixbi"]
 animations = [{
@@ -23,6 +28,14 @@ animations = [{
 "loop": true,
 "name": &"default",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6baog")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
 }]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_lb8gl"]
@@ -38,11 +51,13 @@ script = ExtResource("1_yu4dx")
 shape = SubResource("CircleShape2D_g5qwl")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, 1.19209e-07)
-scale = Vector2(0.930556, 1.02778)
+z_index = 5
+texture_filter = 1
+position = Vector2(1.33333, -0.666667)
+scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_sixbi")
-autoplay = "default"
-frame_progress = 0.807432
+animation = &"new_animation"
+autoplay = "new_animation"
 
 [node name="GravityComponent" type="Node" parent="."]
 script = ExtResource("4_e2sh0")
