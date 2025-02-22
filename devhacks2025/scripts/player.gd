@@ -57,6 +57,14 @@ func set_components(new_components : Array[Component]) -> void:
 		_add_component(c)
 
 
+@rpc("any_peer", "reliable", "call_remote")
+func respawn(pos : Vector2) -> void:
+	if not is_multiplayer_authority():
+		return
+	
+	position = pos
+
+
 func _add_component(component : Component) -> void:
 		match component:
 			Component.DOUBLE_JUMP:

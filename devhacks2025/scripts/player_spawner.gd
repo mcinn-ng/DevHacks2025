@@ -53,9 +53,12 @@ func set_player_components(id : int, components : Array[int]) -> void:
 func set_spawn_point(point : Vector2) -> void:
 	player_spawn_point = point
 	
-	var peer_id := str(multiplayer.get_unique_id())
-	if _players.has(peer_id):
-		_players[peer_id].position = point
+	if is_multiplayer_authority():
+		for player in _players.values():
+			if player.player_character.is_multiplayer_authority():
+				player.player_character.respawn(player_spawn_point)
+			else:
+				player.player_character.respawn.rpc_id(player.player_character.get_multiplayer_authority(), player_spawn_point)
 	
 	spawn_point_updated.emit()
 

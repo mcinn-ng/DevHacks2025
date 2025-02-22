@@ -50,8 +50,8 @@ func _spawn_level(data : String) -> Node:
 	if level.has_node("SpawnPoint"):
 		player_spawner.player_spawn_point = level.get_node("SpawnPoint").position
 	if level.has_node("LevelProperties"):
-		var id := str(multiplayer.get_unique_id())
-		player_spawner._players[id].player_character.set_components(level.get_node("LevelProperties").get_player_components(player_spawner._players[id].peer_index))
+		for session_peer in player_spawner._players.values():
+			session_peer.player_character.set_components(level.get_node("LevelProperties").get_player_components(session_peer.peer_index))
 	
 	return level
 
