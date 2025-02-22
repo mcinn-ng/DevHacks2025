@@ -22,9 +22,9 @@ func break_walls() -> bool:
 	if _nearby_walls.is_empty():
 		return false
 	
-	#Only call destroy() on the authority of the wall (most likely the host)
+	#Call destroy() for all peers
 	for wall in _nearby_walls:
-		wall.destroy.rpc_id(wall.get_multiplayer_authority())
+		wall.destroy.rpc()
 	
 	_nearby_walls.clear()
 	
