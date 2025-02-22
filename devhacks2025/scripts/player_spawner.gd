@@ -54,7 +54,8 @@ func set_spawn_point(point : Vector2) -> void:
 	player_spawn_point = point
 	
 	var peer_id = multiplayer.get_unique_id()
-	_players[peer_id].position = point
+	if _players.has(peer_id):
+		_players[peer_id].position = point
 	
 	spawn_point_updated.emit()
 

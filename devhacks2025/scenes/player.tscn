@@ -135,3 +135,5 @@ script = ExtResource("7_47jfw")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_lb8gl")
+
+[node name="Camera2D" type="Camera2D" parent="."]

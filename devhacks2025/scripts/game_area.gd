@@ -12,7 +12,12 @@ const LOBBY_INDEX : int = 0
 
 @onready var level_spawner: MultiplayerSpawner = $LevelSpawner
 @onready var player_spawner: PlayerSpawner = $PlayerSpawner
+@onready var start_button: Button = $CanvasLayer/Control/HBoxContainer/VBoxContainer/StartButton
+@onready var quit_button: Button = $CanvasLayer/Control/HBoxContainer/VBoxContainer/QuitButton
+@onready var control: Control = $CanvasLayer/Control
 
+
+var _current_level : Node
 
 
 func _ready() -> void:
@@ -20,6 +25,8 @@ func _ready() -> void:
 	
 	if MultiplayerManager.hosting:
 		switch_to_level(LOBBY_INDEX)
+	else:
+		start_button.hide()
 
 
 func switch_to_level(level_index : int) -> Error:
@@ -27,7 +34,12 @@ func switch_to_level(level_index : int) -> Error:
 		push_error("Attempted to switch to invalid level index: %d" % level_index)
 		return ERR_INVALID_PARAMETER
 	
-	level_spawner.spawn(levels[level_index])
+	if is_multiplayer_authority() and _current_level:
+		_current_level.queue_free()
+	
+	var level := level_spawner.spawn(levels[level_index])
+	_current_level = level
+	
 	return OK
 
 
@@ -38,6 +50,24 @@ func _spawn_level(data : String) -> Node:
 	if level.has_node("SpawnPoint"):
 		player_spawner.player_spawn_point = level.get_node("SpawnPoint").position
 	if level.has_node("LevelProperties"):
-		pass
+		var id := multiplayer.get_unique_id()
+		player_spawner._players[id].set_components(level.get_node("LevelProperties").get_player_components(player_spawner._players[id].player_index))
 	
 	return level
+
+
+
+
+func _on_start_button_pressed() -> void:
+	hide_ui.rpc()
+	switch_to_level(LOBBY_INDEX + 1)
+
+
+func _on_quit_button_pressed() -> void:
+	MultiplayerManager.disconnect_session()
+	get_tree().change_scene_to_file("res://menu_screens/main_menu.tscn")
+
+
+@rpc("any_peer", "reliable", "call_local")
+func hide_ui() -> void:
+	control.hide()

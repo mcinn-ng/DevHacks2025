@@ -18,6 +18,7 @@ enum Component {
 
 @onready var body_sprite: AnimatedSprite2D = $BodySprite
 @onready var shell_sprite: AnimatedSprite2D = $BodySprite/ShellSprite
+@onready var camera_2d: Camera2D = $Camera2D
 
 
 var components : Array[Component] = [] : set = set_components
@@ -31,6 +32,8 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	_update_body_color()
+	if name != "Player" and is_multiplayer_authority():
+		camera_2d.make_current()
 
 
 
