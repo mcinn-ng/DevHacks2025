@@ -8,8 +8,8 @@
 [ext_resource type="Script" path="res://components/jump_component.gd" id="5_8v8c2"]
 [ext_resource type="Script" path="res://components/apply_forces_component.gd" id="7_47jfw"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2foqk"]
-size = Vector2(55, 36)
+[sub_resource type="CircleShape2D" id="CircleShape2D_g5qwl"]
+radius = 20.0111
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_sixbi"]
 animations = [{
@@ -22,7 +22,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_lb8gl"]
@@ -31,16 +31,18 @@ properties/0/spawn = true
 properties/0/replication_mode = 1
 
 [node name="Player" type="CharacterBody2D"]
+scale = Vector2(1.5, 1.5)
 script = ExtResource("1_yu4dx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_2foqk")
+shape = SubResource("CircleShape2D_g5qwl")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, 5.96046e-08)
+position = Vector2(0, 1.19209e-07)
 scale = Vector2(0.930556, 1.02778)
 sprite_frames = SubResource("SpriteFrames_sixbi")
-frame_progress = 0.0868667
+autoplay = "default"
+frame_progress = 0.807432
 
 [node name="GravityComponent" type="Node" parent="."]
 script = ExtResource("4_e2sh0")
