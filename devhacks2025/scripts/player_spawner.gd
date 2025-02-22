@@ -3,22 +3,10 @@ extends MultiplayerSpawner
 
 
 const PLAYER = preload("res://scenes/player.tscn")
-const WALL_BREAK_COMPONENT = preload("res://components/wall_break_component.tscn")
-
-
-enum Component {
-	DOUBLE_JUMP,
-	CROUCH,
-	WALL_BREAK,
-	HEAVY
-}
 
 
 @export var player_colors : Array[Color] = [ 0x4a70ffff, 0xcc00e3ff, 0xff9757ff, 0x189950ff ]
 @export var player_spawn_point : Vector2 = Vector2.ZERO
-
-# expects Array[Array[Component]]
-var player_components : Array[Array] = [[ Component.DOUBLE_JUMP ], [ Component.CROUCH ], [ Component.WALL_BREAK ], [ Component.HEAVY ]]
 
 
 var _peer_indexes : Array[int] = range(4)
@@ -44,6 +32,17 @@ func setup_as_host() -> void:
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
 
+func set_player_components(id : int, components : Array[int]) -> void:
+	if not _players.has(id):
+		return
+	
+	var typed_components : Array[Player.Component] = []
+	typed_components.append_array(components.map(func(x : int) -> Player.Component: return Player.Component.values()[x]))
+	
+	var player : Player = _players[id]
+	player.set_components.rpc_id(id, typed_components)
+
+
 #don't use this function. Use the `spawn()` function instead
 func _spawn_player(data : Dictionary) -> Node:
 	var player = PLAYER.instantiate()
@@ -54,30 +53,12 @@ func _spawn_player(data : Dictionary) -> Node:
 		player.position = data.spawn_point
 	if data.has("color"):
 		player.color = data.color
-	if data.has("components"):
-		_apply_components(player, data.components)
 	
 	var wall_break_component = load("res://components/wall_break_component.tscn").instantiate()
 	player.add_child(wall_break_component)
 	
 	return player
 
-
-func _apply_components(player : CharacterBody2D, components : Array) -> void:
-	for component_index in components:
-		match Component.values()[component_index]:
-			Component.DOUBLE_JUMP:
-				var jump : JumpComponent = player.get_node("JumpComponent")
-				jump.double_jump = true
-			Component.CROUCH:
-				#TODO: Implement crouch
-				pass
-			Component.WALL_BREAK:
-				var wall_break : WallBreakComponent = WALL_BREAK_COMPONENT.instantiate()
-				player.add_child(wall_break)
-			Component.HEAVY:
-				#TODO: Implement heavy
-				pass
 
 
 func _on_peer_connected(id : int) -> void:
@@ -90,8 +71,6 @@ func _on_peer_connected(id : int) -> void:
 		"color" : _get_color(peer_index),
 		"spawn_point" : player_spawn_point,
 	}
-	if peer_index < player_components.size():
-		spawn_data["components"] = player_components[peer_index]
 	
 	var player := spawn(spawn_data)
 	_players[id] = SessionPeer.new(

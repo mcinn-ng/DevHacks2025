@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://ch6sdgnq7yp4v"]
+
+[ext_resource type="Script" path="res://scenes/heavy.gd" id="1_h5vlb"]
+
+[node name="HeavyComponent" type="Node"]
+script = ExtResource("1_h5vlb")
+
+[node name="AbilityTimer" type="Timer" parent="."]
+wait_time = 2.047
+one_shot = true
+
+[connection signal="timeout" from="AbilityTimer" to="." method="_on_ability_timer_timeout"]
