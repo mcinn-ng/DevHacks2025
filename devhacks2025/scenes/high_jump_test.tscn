@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://b30lue36gxw5a"]
+[gd_scene load_steps=6 format=3 uid="uid://b6mpv2877kk3j"]
 
 [ext_resource type="PackedScene" uid="uid://cijlev5a57oud" path="res://scenes/player.tscn" id="1_tjdjm"]
 [ext_resource type="Texture2D" uid="uid://b3g8fw5pkji1r" path="res://Assets/Platformer Art Complete Pack/Base pack/Tiles/tiles_spritesheet.png" id="2_eos2c"]

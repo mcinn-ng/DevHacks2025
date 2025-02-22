@@ -1,9 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://b1h02hmvl73pv"]
+[gd_scene load_steps=11 format=3 uid="uid://dr1mlh05i3vj6"]
 
 [ext_resource type="PackedScene" uid="uid://cijlev5a57oud" path="res://scenes/player.tscn" id="1_hnykx"]
 [ext_resource type="Script" path="res://components/shrink_component.gd" id="2_3a7r7"]
 [ext_resource type="Texture2D" uid="uid://b3g8fw5pkji1r" path="res://Assets/Platformer Art Complete Pack/Base pack/Tiles/tiles_spritesheet.png" id="2_hsfle"]
-[ext_resource type="PackedScene" path="res://scenes/moving_platform.tscn" id="3_h84ay"]
+[ext_resource type="PackedScene" uid="uid://bh8pj8jyh5n3a" path="res://scenes/moving_platform.tscn" id="3_h84ay"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_n1451"]
 distance = -138.0
