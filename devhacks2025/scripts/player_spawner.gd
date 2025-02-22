@@ -21,8 +21,6 @@ enum Component {
 var player_components : Array[Array] = [[ Component.DOUBLE_JUMP ], [ Component.CROUCH ], [ Component.WALL_BREAK ], [ Component.HEAVY ]]
 
 
-var _available_components : Array[Array] = player_components
-
 var _peer_indexes : Array[int] = range(4)
 var _players := {}
 
