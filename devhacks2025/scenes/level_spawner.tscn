@@ -1,7 +1,5 @@
 [gd_scene format=3 uid="uid://dkgwifodpdcx1"]
 
-[node name="LevelSynchronizer" type="Node2D"]
-
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+[node name="LevelSpawner" type="MultiplayerSpawner"]
 _spawnable_scenes = PackedStringArray("res://levels/level_one.tscn")
 spawn_path = NodePath("..")

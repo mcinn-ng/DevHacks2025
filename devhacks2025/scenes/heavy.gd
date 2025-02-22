@@ -1,10 +1,7 @@
 extends Node
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	var timer = get_parent().get_node("AbilityTimer")
-	timer.timeout.connect(_on_AbilityTimer_timeout)
+@onready var ability_timer: Timer = $AbilityTimer
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -21,8 +18,7 @@ func _input(event: InputEvent) -> void:
 		snail_sprite.play("Heavy")
 		shell_sprite.visible = false
 		
-		var timer = get_parent().get_node("AbilityTimer")
-		timer.start()  # Start the timer
+		ability_timer.start()  # Start the timer
 		
 		var adjacent_tiles = get_tiles_in_contact()
 		
