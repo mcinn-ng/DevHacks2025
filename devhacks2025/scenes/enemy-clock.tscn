@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://caex3ht87vwat"]
+
+[ext_resource type="Script" path="res://scenes/enemy_clock.gd" id="1_fp4a0"]
+[ext_resource type="Texture2D" uid="uid://c0qyqmefccmua" path="res://Assets/Character_Sprites/pixilart-sprite.png" id="3_qjc1r"]
+
+[sub_resource type="Curve2D" id="Curve2D_kmcd2"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -2, 1, 0, 0, 0, 0, 562, 3)
+}
+point_count = 2
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jengk"]
+atlas = ExtResource("3_qjc1r")
+region = Rect2(22, 201, 30, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_onc6g"]
+atlas = ExtResource("3_qjc1r")
+region = Rect2(52, 201, 30, 30)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jilbu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jengk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_onc6g")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Node2D" type="Node2D"]
+position = Vector2(102, 124)
+script = ExtResource("1_fp4a0")
+
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2(-92, 0)
+curve = SubResource("Curve2D_kmcd2")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(-2, 1)
+rotation = 0.00354608
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Path2D/PathFollow2D"]
+sprite_frames = SubResource("SpriteFrames_jilbu")
