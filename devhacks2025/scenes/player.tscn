@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cijlev5a57oud"]
+[gd_scene load_steps=20 format=3 uid="uid://cijlev5a57oud"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_yu4dx"]
 [ext_resource type="Texture2D" uid="uid://c0qyqmefccmua" path="res://Assets/Character_Sprites/pixilart-sprite.png" id="4_0x8st"]
@@ -6,9 +6,22 @@
 [ext_resource type="Script" path="res://components/move_component.gd" id="4_ubodj"]
 [ext_resource type="Script" path="res://components/jump_component.gd" id="5_8v8c2"]
 [ext_resource type="Script" path="res://components/apply_forces_component.gd" id="7_47jfw"]
+[ext_resource type="Script" path="res://scenes/heavy.gd" id="7_ogjff"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_g5qwl"]
-radius = 11.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_js6gd"]
+size = Vector2(20, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bx8rp"]
+atlas = ExtResource("4_0x8st")
+region = Rect2(23, 71, 30, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ke8m"]
+atlas = ExtResource("4_0x8st")
+region = Rect2(53, 71, 30, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2rfya"]
+atlas = ExtResource("4_0x8st")
+region = Rect2(83, 71, 30, 30)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_juvdl"]
 atlas = ExtResource("4_0x8st")
@@ -26,6 +39,20 @@ region = Rect2(54, 25, 30, 30)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_bx8rp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ke8m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2rfya")
+}],
+"loop": true,
+"name": &"Heavy",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_juvdl")
 }, {
 "duration": 1.0,
@@ -35,7 +62,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_1cmbo")
 }],
 "loop": true,
-"name": &"new_animation",
+"name": &"Snail",
 "speed": 4.0
 }]
 
@@ -79,15 +106,15 @@ scale = Vector2(2, 2)
 script = ExtResource("1_yu4dx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_g5qwl")
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_js6gd")
 
 [node name="BodySprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(1, -4)
 scale = Vector2(0.931945, 1.04722)
 sprite_frames = SubResource("SpriteFrames_sixbi")
-animation = &"new_animation"
-autoplay = "new_animation"
-frame_progress = 0.827999
+animation = &"Heavy"
+autoplay = "Snail"
 
 [node name="ShellSprite" type="AnimatedSprite2D" parent="BodySprite"]
 position = Vector2(-3.22388, 2.91891)
@@ -109,3 +136,10 @@ script = ExtResource("7_47jfw")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_lb8gl")
+
+[node name="HeavyComponent" type="Node" parent="."]
+script = ExtResource("7_ogjff")
+
+[node name="AbilityTimer" type="Timer" parent="."]
+wait_time = 2.047
+one_shot = true
