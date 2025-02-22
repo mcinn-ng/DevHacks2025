@@ -1,3 +1,4 @@
+class_name ApplyForcesComponent
 extends Node
 
 
@@ -12,4 +13,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if not is_multiplayer_authority():
+		return
 	player.move_and_slide()
