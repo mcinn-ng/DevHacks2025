@@ -9,4 +9,4 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	path_follow_2d.progress += 25 *delta
+	path_follow_2d.progress += 5 *delta
