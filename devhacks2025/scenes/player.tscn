@@ -129,6 +129,7 @@ script = ExtResource("4_ubodj")
 
 [node name="JumpComponent" type="Node" parent="."]
 script = ExtResource("5_8v8c2")
+double_jump = false
 
 [node name="ApplyForcesComponent" type="Node" parent="."]
 script = ExtResource("7_47jfw")

@@ -591,6 +591,9 @@ position = Vector2(214, -99)
 
 [node name="LevelProperties" parent="." instance=ExtResource("7_uijvr")]
 player1 = Array[int]([3])
+player2 = Array[int]([0])
+player3 = Array[int]([2])
+player4 = Array[int]([1])
 
 [node name="SpawnPoint" type="Marker2D" parent="."]
 position = Vector2(-4293, -152)
