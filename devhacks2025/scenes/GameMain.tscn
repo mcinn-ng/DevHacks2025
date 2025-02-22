@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://btc4ng1dsf7xr"]
+[gd_scene load_steps=10 format=3 uid="uid://cadvovlj4fvue"]
 
 [ext_resource type="PackedScene" uid="uid://cijlev5a57oud" path="res://scenes/player.tscn" id="1_5v2nx"]
 [ext_resource type="Texture2D" uid="uid://b3g8fw5pkji1r" path="res://Assets/Platformer Art Complete Pack/Base pack/Tiles/tiles_spritesheet.png" id="2_ydwhv"]
@@ -202,7 +202,7 @@ custom_data_layer_1/name = "is_breakable"
 custom_data_layer_1/type = 1
 sources/0 = SubResource("TileSetAtlasSource_lktar")
 
-[node name="MainScene" type="Node2D"]
+[node name="MainScene2" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_5v2nx")]
 position = Vector2(0, -40)
