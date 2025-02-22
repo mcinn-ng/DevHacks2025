@@ -9,6 +9,8 @@ extends Node
 func _ready() -> void:
 	if not player:
 		player = get_parent()
+	
+	process_physics_priority = 1
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
