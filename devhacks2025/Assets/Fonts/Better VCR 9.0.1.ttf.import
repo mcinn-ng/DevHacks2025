@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://nri42uqk6g0f"
-path="res://.godot/imported/Better VCR 9.0.1.ttf-f417709a6b83bc717a5627532d156181.fontdata"
+path="res://.godot/imported/Better VCR 9.0.1.ttf-9f3f7e343d86472bd82d4304a7e9fc6e.fontdata"
 
 [deps]
 
-source_file="res://menu_screens/Better VCR 9.0.1.ttf"
-dest_files=["res://.godot/imported/Better VCR 9.0.1.ttf-f417709a6b83bc717a5627532d156181.fontdata"]
+source_file="res://Assets/Fonts/Better VCR 9.0.1.ttf"
+dest_files=["res://.godot/imported/Better VCR 9.0.1.ttf-9f3f7e343d86472bd82d4304a7e9fc6e.fontdata"]
 
 [params]
 

@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://dkgwifodpdcx1"]
+[gd_scene format=3 uid="uid://cmkdrwvg11qdt"]
 
 [node name="LevelSpawner" type="MultiplayerSpawner"]
 _spawnable_scenes = PackedStringArray("res://scenes/lobby.tscn", "res://levels/level_one.tscn")
