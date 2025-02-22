@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://p0lo76fj0mnq"]
+[gd_scene load_steps=3 format=3 uid="uid://p0lo76fj0mnq"]
 
 [ext_resource type="Script" path="res://menu_screens/instructions.gd" id="1_vexhw"]
+[ext_resource type="FontFile" uid="uid://nri42uqk6g0f" path="res://menu_screens/Better VCR 9.0.1.ttf" id="2_gqjaq"]
 
 [node name="Instructions" type="Control"]
 layout_mode = 3
@@ -27,5 +28,39 @@ grow_vertical = 0
 [node name="back_button" type="Button" parent="BoxContainer"]
 layout_mode = 2
 text = "Back"
+
+[node name="instruction_title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -225.0
+offset_right = 225.0
+offset_bottom = 119.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_gqjaq")
+theme_override_font_sizes/font_size = 47
+text = "Instructions"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="instruction_text" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -557.0
+offset_top = -197.0
+offset_right = 567.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_gqjaq")
+theme_override_font_sizes/font_size = 26
+text = " Use the left and right arrow keys to move and space to jump. Each player is assigned one of these four abilities: double jump (press space twice), crawling (press 1), wall-breaking (press B), and being heavy (press H). Work together to beat the level before the digital clock gets across the screen."
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [connection signal="pressed" from="BoxContainer/back_button" to="." method="_on_back_button_pressed"]
