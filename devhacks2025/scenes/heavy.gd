@@ -3,7 +3,8 @@ extends Node
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	var timer = get_parent().get_node("AbilityTimer")
+	timer.timeout.connect(_on_AbilityTimer_timeout)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -15,12 +16,26 @@ func _process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_H:
 		#call sprite change 
+		var snail_sprite = get_parent().get_node("AnimatedSprite2D")
+		var shell_sprite = get_parent().get_node("AnimatedSprite2D/AnimatedSprite2D2")
+		snail_sprite.play("Heavy")
+		shell_sprite.visible = false
+		
+		var timer = get_parent().get_node("AbilityTimer")
+		timer.start()  # Start the timer
+		
 		var adjacent_tiles = get_tiles_in_contact()
 		
 		for tile_pos in adjacent_tiles:
 			if is_tile_breakable(tile_pos):
 				destroytile(tile_pos)
 
+func _on_AbilityTimer_timeout():
+	var snail_sprite = get_parent().get_node("AnimatedSprite2D")
+	var shell_sprite = get_parent().get_node("AnimatedSprite2D/AnimatedSprite2D2")
+	snail_sprite.play("Snail")
+	shell_sprite.visible = true
+	
 func is_tile_breakable(tile_pos) -> bool:
 	var logic_map = get_parent().get_parent().get_node("TileMap/LogicMap")
 	var tile_data = logic_map.get_cell_tile_data(0,tile_pos)

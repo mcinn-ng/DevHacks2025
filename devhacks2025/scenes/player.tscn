@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cijlev5a57oud"]
+[gd_scene load_steps=20 format=3 uid="uid://cijlev5a57oud"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_yu4dx"]
 [ext_resource type="Texture2D" uid="uid://c0qyqmefccmua" path="res://Assets/Character_Sprites/pixilart-sprite.png" id="4_0x8st"]
@@ -10,6 +10,18 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_js6gd"]
 size = Vector2(20, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bx8rp"]
+atlas = ExtResource("4_0x8st")
+region = Rect2(23, 71, 30, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ke8m"]
+atlas = ExtResource("4_0x8st")
+region = Rect2(53, 71, 30, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2rfya"]
+atlas = ExtResource("4_0x8st")
+region = Rect2(83, 71, 30, 30)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_juvdl"]
 atlas = ExtResource("4_0x8st")
@@ -27,6 +39,20 @@ region = Rect2(54, 25, 30, 30)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_bx8rp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ke8m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2rfya")
+}],
+"loop": true,
+"name": &"Heavy",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_juvdl")
 }, {
 "duration": 1.0,
@@ -36,7 +62,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_1cmbo")
 }],
 "loop": true,
-"name": &"new_animation",
+"name": &"Snail",
 "speed": 4.0
 }]
 
@@ -86,9 +112,8 @@ shape = SubResource("RectangleShape2D_js6gd")
 position = Vector2(1, -4)
 scale = Vector2(0.931945, 1.04722)
 sprite_frames = SubResource("SpriteFrames_sixbi")
-animation = &"new_animation"
-autoplay = "new_animation"
-frame_progress = 0.905718
+animation = &"Heavy"
+autoplay = "Snail"
 
 [node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="AnimatedSprite2D"]
 position = Vector2(-3.22388, 2.91891)
@@ -113,3 +138,7 @@ replication_config = SubResource("SceneReplicationConfig_lb8gl")
 
 [node name="HeavyComponent" type="Node" parent="."]
 script = ExtResource("7_ogjff")
+
+[node name="AbilityTimer" type="Timer" parent="."]
+wait_time = 2.047
+one_shot = true
