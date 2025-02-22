@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://cpw2opb132wxm"]
+[gd_scene load_steps=5 format=3 uid="uid://dcg1fgjatqetp"]
 
 [ext_resource type="Script" path="res://scripts/breakable_wall.gd" id="1_c3icc"]
 [ext_resource type="Texture2D" uid="uid://b3g8fw5pkji1r" path="res://Assets/Platformer Art Complete Pack/Base pack/Tiles/tiles_spritesheet.png" id="1_qwvfm"]

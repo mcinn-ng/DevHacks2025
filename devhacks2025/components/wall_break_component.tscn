@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://djr4p0r8gmugq"]
+[gd_scene load_steps=3 format=3 uid="uid://bu3kmnf17cyuo"]
 
 [ext_resource type="Script" path="res://components/wall_break_component.gd" id="1_8s5bu"]
 

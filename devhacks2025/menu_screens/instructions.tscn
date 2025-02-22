@@ -1,7 +1,44 @@
-[gd_scene load_steps=3 format=3 uid="uid://p0lo76fj0mnq"]
+[gd_scene load_steps=9 format=3 uid="uid://p0lo76fj0mnq"]
 
 [ext_resource type="Script" path="res://menu_screens/instructions.gd" id="1_vexhw"]
-[ext_resource type="FontFile" uid="uid://nri42uqk6g0f" path="res://menu_screens/Better VCR 9.0.1.ttf" id="2_gqjaq"]
+[ext_resource type="FontFile" uid="uid://nri42uqk6g0f" path="res://Assets/Fonts/Better VCR 9.0.1.ttf" id="2_gqjaq"]
+[ext_resource type="Texture2D" uid="uid://byxf46nup05fb" path="res://Assets/ability-icon-sprites.png" id="2_l4xmo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uwdku"]
+atlas = ExtResource("2_l4xmo")
+region = Rect2(26, 66, 22, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fuwm0"]
+atlas = ExtResource("2_l4xmo")
+region = Rect2(78, 66, 22, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ntvnu"]
+atlas = ExtResource("2_l4xmo")
+region = Rect2(52, 66, 22, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ndmkw"]
+atlas = ExtResource("2_l4xmo")
+region = Rect2(104, 66, 22, 20)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tyfka"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uwdku")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fuwm0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ntvnu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ndmkw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Instructions" type="Control"]
 layout_mode = 3
@@ -20,14 +57,41 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -22.5
-offset_top = -31.0
+offset_top = -51.0
 offset_right = 22.5
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
 
 [node name="back_button" type="Button" parent="BoxContainer"]
 layout_mode = 2
 text = "Back"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="BoxContainer"]
+position = Vector2(-377.5, -157)
+scale = Vector2(6.2, 6.2)
+sprite_frames = SubResource("SpriteFrames_tyfka")
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="BoxContainer"]
+position = Vector2(-117.5, -157)
+scale = Vector2(6.2, 6.2)
+sprite_frames = SubResource("SpriteFrames_tyfka")
+frame = 2
+frame_progress = 0.756493
+
+[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="BoxContainer"]
+position = Vector2(374.7, -155)
+scale = Vector2(6.2, 6.2)
+sprite_frames = SubResource("SpriteFrames_tyfka")
+frame = 3
+frame_progress = 0.268699
+
+[node name="AnimatedSprite2D4" type="AnimatedSprite2D" parent="BoxContainer"]
+position = Vector2(146.7, -155)
+scale = Vector2(6.2, 6.2)
+sprite_frames = SubResource("SpriteFrames_tyfka")
+frame = 1
+frame_progress = 0.282329
 
 [node name="instruction_title" type="Label" parent="."]
 layout_mode = 1
@@ -58,9 +122,44 @@ offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("2_gqjaq")
-theme_override_font_sizes/font_size = 26
-text = " Use the left and right arrow keys to move and space to jump. Each player is assigned one of these four abilities: double jump (press space twice), crawling (press 1), wall-breaking (press B), and being heavy (press H). Work together to beat the level before the digital clock gets across the screen."
+theme_override_font_sizes/font_size = 24
+text = " Use the left and right arrow keys to move and space to jump. Each player is assigned one of these four abilities: double jump (press space twice), crawling (press 1), wall-breaking (press B), and being heavy (press H). Your ability will be displayed by the icons at the bottom of the screen. Work together to beat the level before the digital clock gets across the screen."
 horizontal_alignment = 1
 autowrap_mode = 3
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 113.0
+offset_top = 508.0
+offset_right = 213.0
+offset_bottom = 531.0
+text = "Double Jump"
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 0
+offset_left = 863.0
+offset_top = 511.0
+offset_right = 963.0
+offset_bottom = 534.0
+text = "Crawl"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="."]
+layout_mode = 0
+offset_left = 642.0
+offset_top = 510.0
+offset_right = 742.0
+offset_bottom = 533.0
+text = "Heavy"
+horizontal_alignment = 1
+
+[node name="Label4" type="Label" parent="."]
+layout_mode = 0
+offset_left = 378.0
+offset_top = 507.0
+offset_right = 478.0
+offset_bottom = 530.0
+text = "Wall-break"
+horizontal_alignment = 1
 
 [connection signal="pressed" from="BoxContainer/back_button" to="." method="_on_back_button_pressed"]

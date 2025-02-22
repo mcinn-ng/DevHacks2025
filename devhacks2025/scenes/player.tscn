@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cijlev5a57oud"]
+[gd_scene load_steps=19 format=3 uid="uid://cijlev5a57oud"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_yu4dx"]
 [ext_resource type="Texture2D" uid="uid://c0qyqmefccmua" path="res://Assets/Character_Sprites/pixilart-sprite.png" id="4_0x8st"]
@@ -6,10 +6,9 @@
 [ext_resource type="Script" path="res://components/move_component.gd" id="4_ubodj"]
 [ext_resource type="Script" path="res://components/jump_component.gd" id="5_8v8c2"]
 [ext_resource type="Script" path="res://components/apply_forces_component.gd" id="7_47jfw"]
-[ext_resource type="Script" path="res://scenes/heavy.gd" id="7_ogjff"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_js6gd"]
-size = Vector2(20, 18)
+size = Vector2(20, 17.5)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bx8rp"]
 atlas = ExtResource("4_0x8st")
@@ -106,7 +105,7 @@ scale = Vector2(2, 2)
 script = ExtResource("1_yu4dx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -1)
+position = Vector2(0, -1.25)
 shape = SubResource("RectangleShape2D_js6gd")
 
 [node name="BodySprite" type="AnimatedSprite2D" parent="."]
@@ -136,10 +135,3 @@ script = ExtResource("7_47jfw")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_lb8gl")
-
-[node name="HeavyComponent" type="Node" parent="."]
-script = ExtResource("7_ogjff")
-
-[node name="AbilityTimer" type="Timer" parent="."]
-wait_time = 2.047
-one_shot = true

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dh77v0conjdvc"]
+[gd_scene load_steps=3 format=3 uid="uid://dh77v0conjdvc"]
 
 [ext_resource type="Script" path="res://menu_screens/main_menu.gd" id="1_qlnh5"]
+[ext_resource type="FontFile" uid="uid://nri42uqk6g0f" path="res://Assets/Fonts/Better VCR 9.0.1.ttf" id="2_jwvtj"]
 
 [node name="main_menu" type="Control"]
 layout_mode = 3
@@ -19,9 +20,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -50.5
-offset_top = -33.0
+offset_top = 16.5
 offset_right = 50.5
-offset_bottom = 33.0
+offset_bottom = 117.5
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
@@ -37,6 +38,22 @@ text = "Instructions"
 [node name="quit_button" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "Quit"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -372.5
+offset_top = 153.0
+offset_right = 377.5
+offset_bottom = 281.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_jwvtj")
+theme_override_font_sizes/font_size = 100
+text = "CLOCK RACER"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="VBoxContainer/play_button" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/instructions_button" to="." method="_on_instructions_button_pressed"]
