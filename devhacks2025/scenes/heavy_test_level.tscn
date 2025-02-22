@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b3g8fw5pkji1r" path="res://Assets/Platformer Art Complete Pack/Base pack/Tiles/tiles_spritesheet.png" id="2_x5rmj"]
 [ext_resource type="Script" path="res://scenes/tile_map.gd" id="3_r7fg0"]
 [ext_resource type="Texture2D" uid="uid://biaad1phgpp8c" path="res://Assets/Platformer Art Complete Pack/Candy expansion/sheet.png" id="4_52l1w"]
+[ext_resource type="PackedScene" uid="uid://caex3ht87vwat" path="res://scenes/enemy-clock.tscn" id="5_iwakr"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_n1451"]
 
@@ -236,6 +237,11 @@ scale = Vector2(3, 3)
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, 1)
 zoom = Vector2(2, 2)
+
+[node name="Node2D" parent="Player/Camera2D" instance=ExtResource("5_iwakr")]
+z_index = 1
+position = Vector2(-60, 49.3333)
+scale = Vector2(0.333333, 0.333333)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(-4, 377)

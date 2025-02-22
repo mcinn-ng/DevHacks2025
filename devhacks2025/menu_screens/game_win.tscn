@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://d2mqmlh0i33ge"]
+[gd_scene load_steps=3 format=3 uid="uid://2spu1nlqgb1j"]
 
-[ext_resource type="Script" path="res://menu_screens/game_over.gd" id="1_fxnx1"]
-[ext_resource type="FontFile" uid="uid://nri42uqk6g0f" path="res://Assets/Fonts/Better VCR 9.0.1.ttf" id="1_re0od"]
+[ext_resource type="Script" path="res://menu_screens/game_over.gd" id="1_i46bn"]
+[ext_resource type="FontFile" uid="uid://nri42uqk6g0f" path="res://Assets/Fonts/Better VCR 9.0.1.ttf" id="2_811c7"]
 
 [node name="GameOver" type="Control"]
 layout_mode = 3
@@ -10,7 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_fxnx1")
+script = ExtResource("1_i46bn")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -41,9 +41,9 @@ offset_left = 278.0
 offset_top = 54.0
 offset_right = 856.0
 offset_bottom = 303.0
-theme_override_fonts/font = ExtResource("1_re0od")
+theme_override_fonts/font = ExtResource("2_811c7")
 theme_override_font_sizes/font_size = 120
-text = "YOU LOSE"
+text = "YOU WIN"
 horizontal_alignment = 1
 vertical_alignment = 1
 
