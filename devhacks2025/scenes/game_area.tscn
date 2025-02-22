@@ -8,6 +8,7 @@
 script = ExtResource("1_33qbb")
 
 [node name="LevelSpawner" parent="." instance=ExtResource("1_l8wvf")]
+_spawnable_scenes = PackedStringArray("res://scenes/lobby.tscn", "res://scenes/the_main_level.tscn")
 spawn_path = NodePath("../Level")
 
 [node name="Level" type="Node2D" parent="."]

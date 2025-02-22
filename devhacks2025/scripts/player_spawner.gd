@@ -40,20 +40,20 @@ func setup_as_host() -> void:
 
 
 func set_player_components(id : int, components : Array[int]) -> void:
-	if not _players.has(id):
+	if not _players.has(str(id)):
 		return
 	
 	var typed_components : Array[Player.Component] = []
 	typed_components.append_array(components.map(func(x : int) -> Player.Component: return Player.Component.values()[x]))
 	
-	var player : Player = _players[id]
+	var player : Player = _players[str(id)]
 	player.set_components.rpc(typed_components)
 
 
 func set_spawn_point(point : Vector2) -> void:
 	player_spawn_point = point
 	
-	var peer_id = multiplayer.get_unique_id()
+	var peer_id := str(multiplayer.get_unique_id())
 	if _players.has(peer_id):
 		_players[peer_id].position = point
 	
@@ -93,7 +93,7 @@ func _on_peer_connected(id : int) -> void:
 	}
 	
 	var player := spawn(spawn_data)
-	_players[id] = SessionPeer.new(
+	_players[str(id)] = SessionPeer.new(
 		id,
 		peer_index,
 		player
@@ -101,12 +101,12 @@ func _on_peer_connected(id : int) -> void:
 
 
 func _on_peer_disconnected(id : int) -> void:
-	if _players.has(id):
-		var session_peer : SessionPeer = _players[id]
+	if _players.has(str(id)):
+		var session_peer : SessionPeer = _players[str(id)]
 		if is_instance_valid(session_peer.player_character):
 			session_peer.player_character.queue_free()
 		_peer_indexes.push_front(session_peer.peer_index)
-		_players.erase(id)
+		_players.erase(str(id))
 
 
 func _get_color(index : int) -> Color:
