@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cadvovlj4fvue"]
+[gd_scene load_steps=10 format=3 uid="uid://btc4ng1dsf7xr"]
 
 [ext_resource type="PackedScene" uid="uid://cijlev5a57oud" path="res://scenes/player.tscn" id="1_5v2nx"]
 [ext_resource type="Texture2D" uid="uid://b3g8fw5pkji1r" path="res://Assets/Platformer Art Complete Pack/Base pack/Tiles/tiles_spritesheet.png" id="2_ydwhv"]
+[ext_resource type="Texture2D" uid="uid://biaad1phgpp8c" path="res://Assets/Platformer Art Complete Pack/Candy expansion/sheet.png" id="3_f5spj"]
+[ext_resource type="Script" path="res://scenes/tile_map.gd" id="4_a5cfc"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_n1451"]
 
@@ -30,7 +32,9 @@ texture_region_size = Vector2i(70, 70)
 2:4/0 = 0
 2:3/0 = 0
 1:5/0 = 0
+1:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-35, -35, 35, -35, 35, 35, -35, 35)
 2:5/0 = 0
+2:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-35, -35, 35, -35, 35, 35, -35, 35)
 2:6/0 = 0
 1:6/0 = 0
 1:7/0 = 0
@@ -182,10 +186,27 @@ tile_size = Vector2i(70, 70)
 physics_layer_0/collision_layer = 1
 sources/8 = SubResource("TileSetAtlasSource_gyjun")
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lktar"]
+texture = ExtResource("3_f5spj")
+texture_region_size = Vector2i(70, 70)
+1:0/0 = 0
+1:0/0/custom_data_0 = 1
+1:0/0/custom_data_1 = true
+1:2/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_f8yjf"]
+tile_size = Vector2i(70, 70)
+custom_data_layer_0/name = "block_type"
+custom_data_layer_0/type = 2
+custom_data_layer_1/name = "is_breakable"
+custom_data_layer_1/type = 1
+sources/0 = SubResource("TileSetAtlasSource_lktar")
+
 [node name="MainScene" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_5v2nx")]
 position = Vector2(0, -40)
+scale = Vector2(3, 3)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, 1)
@@ -201,4 +222,10 @@ shape = SubResource("WorldBoundaryShape2D_n1451")
 position = Vector2(-1, 1)
 tile_set = SubResource("TileSet_vevh4")
 format = 2
-layer_0/tile_data = PackedInt32Array(65535, 458760, 7, 0, 458760, 7, 1, 458760, 7, 2, 458760, 7, 3, 458760, 7, 65534, 458760, 7, 65533, 458760, 7, 65532, 458760, 7, 6, 458760, 7, 7, 458760, 7, 8, 458760, 7, 9, 720904, 7, 65546, 720904, 7, 131083, 720904, 7, 65545, 720904, 8, 131082, 720904, 8, 131081, 458760, 4, 196620, 458760, 8, 196621, 458760, 8, 196622, 458760, 8, 65551, 524296, 3, 14, 524296, 3, -65523, 524296, 3, -131061, 524296, 3, -131062, 524296, 3, -196599, 524296, 3, -262135, 458760, 2, -327671, 458760, 2, -393207, 458760, 2, -458743, 458760, 2, -524279, 458760, 2, -65524, 524296, 3, -524278, 589832, 0, -524277, 589832, 0, -524276, 589832, 0, -524275, 589832, 0, -524274, 589832, 0, -524273, 589832, 0, -655345, 589832, 5, -589809, 589832, 6, 262159, 458760, 7, 262160, 458760, 7, 262161, 458760, 7, 196626, 458760, 7, 196627, 458760, 7, 131092, 458760, 7, 65557, 458760, 7, 19, 524296, 4, 18, 524296, 4, 17, 524296, 4)
+layer_0/tile_data = PackedInt32Array(65535, 458760, 7, 0, 458760, 7, 1, 458760, 7, 3, 458760, 7, 65534, 458760, 7, 65533, 458760, 7, 6, 458760, 7, 7, 458760, 7, 8, 458760, 7, 9, 720904, 7, 65546, 720904, 7, 131083, 720904, 7, 65545, 720904, 8, 131082, 720904, 8, 131081, 458760, 4, 196620, 458760, 8, 196621, 458760, 8, 196622, 458760, 8, 65551, 524296, 3, 14, 524296, 3, -65523, 524296, 3, -131061, 524296, 3, -131062, 524296, 3, -196599, 524296, 3, -262135, 458760, 2, -327671, 458760, 2, -393207, 458760, 2, -458743, 458760, 2, -524279, 458760, 2, -65524, 524296, 3, -524278, 589832, 0, -524277, 589832, 0, -524276, 589832, 0, -524275, 589832, 0, -524274, 589832, 0, -524273, 589832, 0, -655345, 589832, 5, -589809, 589832, 6, 262159, 458760, 7, 262160, 458760, 7, 262161, 458760, 7, 196626, 458760, 7, 196627, 458760, 7, 131092, 458760, 7, 65557, 458760, 7, 19, 524296, 4, 18, 524296, 4, 17, 524296, 4, 2, 458760, 7, 65532, 458760, 7)
+script = ExtResource("4_a5cfc")
+
+[node name="LogicMap" type="TileMap" parent="TileMap"]
+tile_set = SubResource("TileSet_f8yjf")
+format = 2
+layer_0/tile_data = PackedInt32Array(6, 65536, 0, 3, 65536, 0, 2, 65536, 0)

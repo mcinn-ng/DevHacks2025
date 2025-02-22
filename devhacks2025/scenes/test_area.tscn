@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cm0johvsfk0xv"]
+[gd_scene load_steps=6 format=3 uid="uid://cm0johvsfk0xv"]
 
 [ext_resource type="Script" path="res://scripts/test_area.gd" id="1_lxodj"]
+[ext_resource type="PackedScene" path="res://scenes/breakable_wall.tscn" id="2_08ajn"]
+[ext_resource type="Script" path="res://scripts/player_spawner.gd" id="2_xlrgi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j256s"]
 size = Vector2(1154, 82)
@@ -48,9 +50,10 @@ position = Vector2(-2.00003, 0)
 scale = Vector2(1152, 80)
 texture = SubResource("PlaceholderTexture2D_40ddk")
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://scenes/player.tscn")
 spawn_path = NodePath("..")
+script = ExtResource("2_xlrgi")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -88,6 +91,9 @@ placeholder_text = "Host Address"
 
 [node name="SpawnPoint" type="Marker2D" parent="."]
 position = Vector2(583, 308)
+
+[node name="BreakableWall" parent="." instance=ExtResource("2_08ajn")]
+position = Vector2(954, 528)
 
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer/ConnectButton" to="." method="_on_connect_button_pressed"]
