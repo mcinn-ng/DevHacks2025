@@ -2,21 +2,24 @@ class_name PlayerSpawner
 extends MultiplayerSpawner
 
 
+signal spawn_point_updated
+
+
 const PLAYER = preload("res://scenes/player.tscn")
 
 
 @export var player_colors : Array[Color] = [ 0x4a70ffff, 0xcc00e3ff, 0xff9757ff, 0x189950ff ]
-@export var player_spawn_point : Vector2 = Vector2.ZERO
+@export var player_spawn_point : Vector2 = Vector2.ZERO : set = set_spawn_point
 
 
-var _peer_indexes : Array[int] = range(4)
+var _peer_indexes : Array[int] = [0, 1, 2, 3]
 var _players := {}
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	spawn_function = _spawn_player
-	if multiplayer.is_server():
+	if MultiplayerManager.hosting:
 		setup_as_host()
 
 
@@ -28,8 +31,12 @@ func _exit_tree() -> void:
 
 
 func setup_as_host() -> void:
-	multiplayer.peer_connected.connect(_on_peer_connected)
-	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	if not multiplayer.peer_connected.is_connected(_on_peer_connected):
+		multiplayer.peer_connected.connect(_on_peer_connected)
+	if not multiplayer.peer_disconnected.is_connected(_on_peer_disconnected):
+		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	
+	_on_peer_connected(MultiplayerManager.DEFAULT_HOST_ID)
 
 
 func set_player_components(id : int, components : Array[int]) -> void:
@@ -40,7 +47,16 @@ func set_player_components(id : int, components : Array[int]) -> void:
 	typed_components.append_array(components.map(func(x : int) -> Player.Component: return Player.Component.values()[x]))
 	
 	var player : Player = _players[id]
-	player.set_components.rpc_id(id, typed_components)
+	player.set_components.rpc(typed_components)
+
+
+func set_spawn_point(point : Vector2) -> void:
+	player_spawn_point = point
+	
+	var peer_id = multiplayer.get_unique_id()
+	_players[peer_id].position = point
+	
+	spawn_point_updated.emit()
 
 
 #don't use this function. Use the `spawn()` function instead
@@ -62,6 +78,9 @@ func _spawn_player(data : Dictionary) -> Node:
 
 
 func _on_peer_connected(id : int) -> void:
+	if not player_spawn_point:
+		await spawn_point_updated
+	
 	var peer_index : int = _peer_indexes.pop_front()
 	if _peer_indexes.is_empty():
 		_peer_indexes.append(peer_index + 1)

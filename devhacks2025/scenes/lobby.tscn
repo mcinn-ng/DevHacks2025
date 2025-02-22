@@ -1,3 +1,15 @@
-[gd_scene format=3 uid="uid://cn1ip2et0hg50"]
+[gd_scene load_steps=2 format=3 uid="uid://cn1ip2et0hg50"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vk43d"]
 
 [node name="Lobby" type="Node2D"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(540, 647)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("WorldBoundaryShape2D_vk43d")
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(557, 357)
