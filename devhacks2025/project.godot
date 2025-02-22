@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="DevHacks2025"
-run/main_scene="res://scenes/Crawl-test.tscn"
+run/main_scene="res://scenes/high_jump_test.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 

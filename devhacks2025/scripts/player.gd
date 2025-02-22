@@ -17,6 +17,7 @@ enum Component {
 
 
 @onready var body_sprite: AnimatedSprite2D = $BodySprite
+@onready var shell_sprite: AnimatedSprite2D = $BodySprite/ShellSprite
 
 
 var components : Array[Component] = [] : set = set_components

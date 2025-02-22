@@ -13,8 +13,8 @@ func _process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_H:
 		#call sprite change 
-		var snail_sprite = get_parent().get_node("AnimatedSprite2D")
-		var shell_sprite = get_parent().get_node("AnimatedSprite2D/AnimatedSprite2D2")
+		var snail_sprite = get_parent().get_node("BodySprite")
+		var shell_sprite = get_parent().get_node("BodySprite/ShellSprite")
 		snail_sprite.play("Heavy")
 		shell_sprite.visible = false
 		
@@ -26,9 +26,9 @@ func _input(event: InputEvent) -> void:
 			if is_tile_breakable(tile_pos):
 				destroytile(tile_pos)
 
-func _on_ability_timer_timeout():
-	var snail_sprite = get_parent().get_node("AnimatedSprite2D")
-	var shell_sprite = get_parent().get_node("AnimatedSprite2D/AnimatedSprite2D2")
+func _on_AbilityTimer_timeout():
+	var snail_sprite = get_parent().get_node("BodySprite")
+	var shell_sprite = get_parent().get_node("BodySprite/ShellSprite")
 	snail_sprite.play("Snail")
 	shell_sprite.visible = true
 	
