@@ -6,7 +6,7 @@ const DEFAULT_JUMP_VELOCITY = -400.0
 
 
 @export var jump_velocity : float = DEFAULT_JUMP_VELOCITY 
-@export var double_jump : bool = false
+@export var double_jump : bool = true
 @export var player : CharacterBody2D
 
 

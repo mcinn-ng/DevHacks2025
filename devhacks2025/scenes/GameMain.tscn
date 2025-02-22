@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bfcd70rkddfr7"]
+[gd_scene load_steps=6 format=3 uid="uid://cadvovlj4fvue"]
 
 [ext_resource type="PackedScene" uid="uid://cijlev5a57oud" path="res://scenes/player.tscn" id="1_5v2nx"]
 [ext_resource type="Texture2D" uid="uid://b3g8fw5pkji1r" path="res://Assets/Platformer Art Complete Pack/Base pack/Tiles/tiles_spritesheet.png" id="2_ydwhv"]
@@ -9,7 +9,6 @@
 texture = ExtResource("2_ydwhv")
 separation = Vector2i(2, 2)
 texture_region_size = Vector2i(70, 70)
-36:41/size_in_atlas = Vector2i(5, 5)
 36:41/0 = 0
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-35, -35, 35, -35, 35, 35, -35, 35)
