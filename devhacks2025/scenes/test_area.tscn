@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://de0r3uqj8w688"]
+[gd_scene load_steps=5 format=3 uid="uid://de0r3uqj8w688"]
 
 [ext_resource type="Script" path="res://scripts/test_area.gd" id="1_lxodj"]
+[ext_resource type="PackedScene" uid="uid://ch2n2w1r127nd" path="res://scenes/breakable_wall.tscn" id="2_08ajn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j256s"]
 size = Vector2(1154, 82)
@@ -88,6 +89,9 @@ placeholder_text = "Host Address"
 
 [node name="SpawnPoint" type="Marker2D" parent="."]
 position = Vector2(583, 308)
+
+[node name="BreakableWall" parent="." instance=ExtResource("2_08ajn")]
+position = Vector2(954, 528)
 
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer/ConnectButton" to="." method="_on_connect_button_pressed"]
