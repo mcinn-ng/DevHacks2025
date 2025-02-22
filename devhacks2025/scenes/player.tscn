@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://components/apply_forces_component.gd" id="7_47jfw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_js6gd"]
-size = Vector2(20, 18)
+size = Vector2(20, 17.5)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bx8rp"]
 atlas = ExtResource("4_0x8st")
@@ -105,7 +105,7 @@ scale = Vector2(2, 2)
 script = ExtResource("1_yu4dx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -1)
+position = Vector2(0, -1.25)
 shape = SubResource("RectangleShape2D_js6gd")
 
 [node name="BodySprite" type="AnimatedSprite2D" parent="."]
