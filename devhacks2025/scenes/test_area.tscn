@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cm0johvsfk0xv"]
 
 [ext_resource type="Script" path="res://scripts/test_area.gd" id="1_lxodj"]
-[ext_resource type="PackedScene" path="res://scenes/breakable_wall.tscn" id="2_08ajn"]
+[ext_resource type="PackedScene" uid="uid://ch2n2w1r127nd" path="res://scenes/breakable_wall.tscn" id="2_08ajn"]
 [ext_resource type="Script" path="res://scripts/player_spawner.gd" id="2_xlrgi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j256s"]
