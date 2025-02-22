@@ -21,9 +21,7 @@ enum Component {
 var player_components : Array[Array] = [[ Component.DOUBLE_JUMP ], [ Component.CROUCH ], [ Component.WALL_BREAK ], [ Component.HEAVY ]]
 
 
-var _available_components : Array[Array] = player_components
-
-var _color_index : int = 0
+var _peer_indexes : Array[int] = range(4)
 var _players := {}
 
 
@@ -83,23 +81,32 @@ func _apply_components(player : CharacterBody2D, components : Array) -> void:
 
 
 func _on_peer_connected(id : int) -> void:
+	var peer_index : int = _peer_indexes.pop_front()
+	if _peer_indexes.is_empty():
+		_peer_indexes.append(peer_index + 1)
+	
 	var spawn_data := {
 		"id" : id,
-		"color" : _get_color(_color_index),
+		"color" : _get_color(peer_index),
 		"spawn_point" : player_spawn_point,
 	}
-	if _players.size() < player_components.size():
-		spawn_data["components"] = player_components[_players.size()]
-	_color_index += 1
+	if peer_index < player_components.size():
+		spawn_data["components"] = player_components[peer_index]
 	
 	var player := spawn(spawn_data)
-	_players[id] = player
+	_players[id] = SessionPeer.new(
+		id,
+		peer_index,
+		player
+	)
 
 
 func _on_peer_disconnected(id : int) -> void:
 	if _players.has(id):
-		if is_instance_valid(_players[id]):
-			_players[id].queue_free()
+		var session_peer : SessionPeer = _players[id]
+		if is_instance_valid(session_peer.player_character):
+			session_peer.player_character.queue_free()
+		_peer_indexes.push_front(session_peer.peer_index)
 		_players.erase(id)
 
 
@@ -112,3 +119,15 @@ func _get_color(index : int) -> Color:
 
 func _random_color() -> Color:
 	return Color(randf(), randf(),randf())
+
+
+class SessionPeer:
+	var id : int
+	var peer_index : int
+	var player_character : CharacterBody2D
+	
+	@warning_ignore("shadowed_variable")
+	func _init(peer_id : int, peer_index : int, character : CharacterBody2D) -> void:
+		self.id = peer_id
+		self.peer_index = peer_index
+		self.player_character = character
