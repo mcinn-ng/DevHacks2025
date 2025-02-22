@@ -24,7 +24,7 @@ func _process(delta: float) -> void:
 
 
 func get_player_components(player_index : int) -> Array[Player.Component]:
-	if player_index < 0 or player_index > _components.size():
+	if player_index < 0 or player_index >= _components.size():
 		return []
 	else:
 		return _components[player_index]

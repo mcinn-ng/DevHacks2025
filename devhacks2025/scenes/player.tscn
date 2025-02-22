@@ -137,3 +137,4 @@ script = ExtResource("7_47jfw")
 replication_config = SubResource("SceneReplicationConfig_lb8gl")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true

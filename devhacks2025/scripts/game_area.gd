@@ -6,7 +6,7 @@ const LOBBY_INDEX : int = 0
 
 @export var levels : Array[String] = [
 	"res://scenes/lobby.tscn",
-	"res://levels/level_one.tscn"
+	"res://scenes/the_main_level.tscn"
 ]
 
 
@@ -51,7 +51,7 @@ func _spawn_level(data : String) -> Node:
 		player_spawner.player_spawn_point = level.get_node("SpawnPoint").position
 	if level.has_node("LevelProperties"):
 		var id := multiplayer.get_unique_id()
-		player_spawner._players[id].set_components(level.get_node("LevelProperties").get_player_components(player_spawner._players[id].player_index))
+		player_spawner._players[id].player_character.set_components(level.get_node("LevelProperties").get_player_components(player_spawner._players[id].peer_index))
 	
 	return level
 
