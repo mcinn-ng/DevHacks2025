@@ -1,6 +1,5 @@
 extends CharacterBody2D
 
-
 @export var color : Color = Color.WHITE
 
 
@@ -15,9 +14,6 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	_update_body_color()
 
-
-func _physics_process(delta: float) -> void:
-	pass
 
 
 func set_color(value : Color) -> void:
