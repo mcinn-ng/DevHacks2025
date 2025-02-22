@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://cgbvh4lh06bt"]
+[gd_scene load_steps=2 format=3 uid="uid://cgbvh4lh06bt"]
+
+[ext_resource type="Script" path="res://menu_screens/connection_screen.gd" id="1_xa0f6"]
 
 [node name="ConnectionScreen" type="Control"]
 layout_mode = 3
@@ -7,6 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_xa0f6")
 
 [node name="BoxContainer" type="BoxContainer" parent="."]
 layout_mode = 1
@@ -33,3 +36,7 @@ text = "Connect"
 [node name="back_button" type="Button" parent="BoxContainer"]
 layout_mode = 2
 text = "Back"
+
+[connection signal="pressed" from="BoxContainer/host_button" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="BoxContainer/connect_button" to="." method="_on_connect_button_pressed"]
+[connection signal="pressed" from="BoxContainer/back_button" to="." method="_on_back_button_pressed"]
