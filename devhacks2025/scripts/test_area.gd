@@ -7,12 +7,13 @@ const PLAYER = preload("res://scenes/player.tscn")
 @onready var control: Control = $CanvasLayer/Control
 @onready var spawn_point: Marker2D = $SpawnPoint
 @onready var host_address_edit: LineEdit = $CanvasLayer/Control/VBoxContainer/HBoxContainer/LineEdit
-@onready var multiplayer_spawner: MultiplayerSpawner = $MultiplayerSpawner
+@onready var multiplayer_spawner: PlayerSpawner = $PlayerSpawner
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	multiplayer_spawner.spawn_function = _spawn_player
+	pass
+	#multiplayer_spawner.spawn_function = _spawn_player
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -23,8 +24,9 @@ func _process(delta: float) -> void:
 func _on_host_button_pressed() -> void:
 	control.hide()
 	MultiplayerManager.setup_server()
+	multiplayer_spawner.setup_as_host()
 	multiplayer.peer_connected.connect(_on_peer_connected)
-	_on_peer_connected(multiplayer.get_unique_id())
+	multiplayer_spawner._on_peer_connected(multiplayer.get_unique_id())
 
 
 func _on_connect_button_pressed() -> void:
