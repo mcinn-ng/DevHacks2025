@@ -15,16 +15,16 @@ func _process(delta: float) -> void:
 		return
 	
 	if Input.is_action_just_pressed("break_wall"):
-		break_walls.rpc_id(MultiplayerManager.DEFAULT_HOST_ID)
+		break_walls()
 
 
-@rpc("authority", "call_remote", "reliable")
 func break_walls() -> bool:
 	if _nearby_walls.is_empty():
 		return false
 	
+	#Only call destroy() on the authority of the wall (most likely the host)
 	for wall in _nearby_walls:
-		wall.destroy()
+		wall.destroy.rpc_id(wall.get_multiplayer_authority())
 	
 	_nearby_walls.clear()
 	
