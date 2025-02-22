@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://de0r3uqj8w688"]
+[gd_scene load_steps=6 format=3 uid="uid://de0r3uqj8w688"]
 
 [ext_resource type="Script" path="res://scripts/test_area.gd" id="1_lxodj"]
 [ext_resource type="PackedScene" uid="uid://ch2n2w1r127nd" path="res://scenes/breakable_wall.tscn" id="2_08ajn"]
+[ext_resource type="Script" path="res://scripts/player_spawner.gd" id="2_xlrgi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j256s"]
 size = Vector2(1154, 82)
@@ -49,9 +50,10 @@ position = Vector2(-2.00003, 0)
 scale = Vector2(1152, 80)
 texture = SubResource("PlaceholderTexture2D_40ddk")
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://scenes/player.tscn")
 spawn_path = NodePath("..")
+script = ExtResource("2_xlrgi")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

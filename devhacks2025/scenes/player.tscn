@@ -75,12 +75,13 @@ properties/0/spawn = true
 properties/0/replication_mode = 1
 
 [node name="Player" type="CharacterBody2D"]
+scale = Vector2(2, 2)
 script = ExtResource("1_yu4dx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_g5qwl")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="BodySprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(1, -4)
 scale = Vector2(0.931945, 1.04722)
 sprite_frames = SubResource("SpriteFrames_sixbi")
@@ -88,7 +89,7 @@ animation = &"new_animation"
 autoplay = "new_animation"
 frame_progress = 0.827999
 
-[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="AnimatedSprite2D"]
+[node name="ShellSprite" type="AnimatedSprite2D" parent="BodySprite"]
 position = Vector2(-3.22388, 2.91891)
 scale = Vector2(1.21159, 1.13615)
 sprite_frames = SubResource("SpriteFrames_rmnou")
