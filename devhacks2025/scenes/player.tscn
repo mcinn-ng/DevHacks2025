@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cijlev5a57oud"]
+[gd_scene load_steps=17 format=3 uid="uid://cijlev5a57oud"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_yu4dx"]
 [ext_resource type="Texture2D" uid="uid://c0qyqmefccmua" path="res://Assets/Character_Sprites/pixilart-sprite.png" id="4_0x8st"]
@@ -6,9 +6,10 @@
 [ext_resource type="Script" path="res://components/move_component.gd" id="4_ubodj"]
 [ext_resource type="Script" path="res://components/jump_component.gd" id="5_8v8c2"]
 [ext_resource type="Script" path="res://components/apply_forces_component.gd" id="7_47jfw"]
+[ext_resource type="Script" path="res://scenes/heavy.gd" id="7_ogjff"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_g5qwl"]
-radius = 11.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_js6gd"]
+size = Vector2(20, 18)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_juvdl"]
 atlas = ExtResource("4_0x8st")
@@ -78,7 +79,8 @@ properties/0/replication_mode = 1
 script = ExtResource("1_yu4dx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_g5qwl")
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_js6gd")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(1, -4)
@@ -86,7 +88,7 @@ scale = Vector2(0.931945, 1.04722)
 sprite_frames = SubResource("SpriteFrames_sixbi")
 animation = &"new_animation"
 autoplay = "new_animation"
-frame_progress = 0.827999
+frame_progress = 0.905718
 
 [node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="AnimatedSprite2D"]
 position = Vector2(-3.22388, 2.91891)
@@ -108,3 +110,6 @@ script = ExtResource("7_47jfw")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_lb8gl")
+
+[node name="HeavyComponent" type="Node" parent="."]
+script = ExtResource("7_ogjff")
