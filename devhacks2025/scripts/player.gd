@@ -1,13 +1,32 @@
 extends CharacterBody2D
 
-var normal_size = Vector2(1.5, 1.5)
-var small_size = Vector2(1.5, 0.75)
 
-func shrink():
-	if Input.is_action_pressed("Crawl"):
-		scale = small_size
-	else:
-		scale = normal_size
+@export var color : Color = Color.WHITE
+
+
+@onready var body_sprite: AnimatedSprite2D = $BodySprite
+
+
+func _enter_tree() -> void:
+	if name != "Player":
+		set_multiplayer_authority(name.to_int())
+
+
+func _ready() -> void:
+	_update_body_color()
+
 
 func _physics_process(delta: float) -> void:
-	shrink()
+	pass
+
+
+func set_color(value : Color) -> void:
+	if color == value:
+		return
+	color = value
+	if is_node_ready():
+		_update_body_color()
+
+
+func _update_body_color() -> void:
+	body_sprite.self_modulate = color

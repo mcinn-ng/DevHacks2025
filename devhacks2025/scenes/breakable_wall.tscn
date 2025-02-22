@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://ch2n2w1r127nd"]
+
+[ext_resource type="Script" path="res://scripts/breakable_wall.gd" id="1_c3icc"]
+[ext_resource type="Texture2D" uid="uid://b3g8fw5pkji1r" path="res://Assets/Platformer Art Complete Pack/Base pack/Tiles/tiles_spritesheet.png" id="1_qwvfm"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cdgej"]
+atlas = ExtResource("1_qwvfm")
+region = Rect2(0, 648, 70, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dsrji"]
+size = Vector2(70, 70)
+
+[node name="BreakableWall" type="StaticBody2D"]
+script = ExtResource("1_c3icc")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = -35.0
+offset_top = -35.0
+offset_right = 35.0
+offset_bottom = 35.0
+pivot_offset = Vector2(35, 35)
+texture = SubResource("AtlasTexture_cdgej")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_dsrji")

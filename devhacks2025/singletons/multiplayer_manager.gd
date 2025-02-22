@@ -1,6 +1,7 @@
 extends Node
 
 const DEFAULT_PORT := 3050
+const DEFAULT_HOST_ID := 1
 
 
 func connect_to_host(address : String, port : int = DEFAULT_PORT) -> Error:
