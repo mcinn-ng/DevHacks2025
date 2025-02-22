@@ -20,7 +20,7 @@ func _input(event: InputEvent) -> void:
 		
 
 		##5,6 8,6
-		var timer = get_parent().get_node("AbilityTimer")
+		var timer = get_node("AbilityTimer")
 		timer.start()  # Start the timer
 		
 		var adjacent_tiles = get_tiles_in_contact()
