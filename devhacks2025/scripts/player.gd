@@ -4,6 +4,7 @@ extends CharacterBody2D
 
 
 @onready var body_sprite: AnimatedSprite2D = $BodySprite
+@onready var shell_sprite: AnimatedSprite2D = $BodySprite/ShellSprite
 
 
 func _enter_tree() -> void:
