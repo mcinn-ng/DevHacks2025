@@ -11,6 +11,9 @@ const DEFAULT_HOST_ID := 1
 
 @export var player_indexes : Dictionary = {}
 
+# Can be overridden using command line arg "--address"
+var client_default_address := ""
+
 
 # Used to keep track of available player indexes
 # example: if there are 4 players and player 2 disconnects, the next player to connect becomes player 2 rather than player 5

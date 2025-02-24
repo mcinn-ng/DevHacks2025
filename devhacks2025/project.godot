@@ -21,6 +21,7 @@ config/icon="res://icon.svg"
 
 Util="*res://singletons/util.gd"
 MultiplayerManager="*res://singletons/multiplayer_manager.tscn"
+CmdlineArgHandler="*res://singletons/cmdline_arg_handler.gd"
 
 [input]
 
