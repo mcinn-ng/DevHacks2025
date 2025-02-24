@@ -52,12 +52,14 @@ func handle_address(address : String) -> bool:
 	return true
 
 
-# Credit: https://forum.godotengine.org/t/is-there-any-way-to-pass-arguments-to-the-game-when-running-it-from-the-cli-with-headless-server-version/23228/2
 func parse_command_line_arguments() -> Dictionary:
-	var arguments := {}
-	for argument in OS.get_cmdline_args():
-		# Parse valid command-line arguments into a dictionary
-		if argument.find("=") > -1:
+	var arguments = {}
+	for argument in OS.get_cmdline_user_args():
+		if argument.contains("="):
 			var key_value = argument.split("=")
-			arguments[key_value[0].lstrip("--")] = key_value[1]
+			arguments[key_value[0].trim_prefix("--")] = key_value[1]
+		else:
+			# Options without an argument will be present in the dictionary,
+			# with the value set to an empty string.
+			arguments[argument.trim_prefix("--")] = ""
 	return arguments
