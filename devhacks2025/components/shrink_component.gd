@@ -15,12 +15,7 @@ func _ready() -> void:
 		player = get_parent()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	shrink()
 	pass
 

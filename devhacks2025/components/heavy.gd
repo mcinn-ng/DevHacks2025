@@ -4,11 +4,6 @@ extends Node
 @onready var ability_timer: Timer = $AbilityTimer
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:	
-	pass
-	
-	
 #every time someone presses and input check for ability 
 func _input(event: InputEvent) -> void:
 	if not is_multiplayer_authority():

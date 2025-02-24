@@ -1,9 +1,6 @@
 extends Node2D
 
 
-signal start_pressed
-
-
 @onready var start_button: Button = $CanvasLayer/Control/HBoxContainer/VBoxContainer/StartButton
 @onready var quit_button: Button = $CanvasLayer/Control/HBoxContainer/VBoxContainer/QuitButton
 @onready var control: Control = $CanvasLayer/Control
