@@ -6,7 +6,7 @@ const LOBBY_INDEX : int = 0
 
 @export var levels : Array[String] = [
 	"res://scenes/lobby.tscn",
-	"res://levels/level_one.tscn"
+	"res://scenes/the_main_level.tscn"
 ]
 
 
@@ -14,11 +14,13 @@ const LOBBY_INDEX : int = 0
 @onready var player_spawner: PlayerSpawner = $PlayerSpawner
 
 
+var _current_level : Node
+
 
 func _ready() -> void:
 	level_spawner.spawn_function = _spawn_level
 	
-	if MultiplayerManager.hosting:
+	if MultiplayerManager.is_server():
 		switch_to_level(LOBBY_INDEX)
 
 
@@ -27,7 +29,12 @@ func switch_to_level(level_index : int) -> Error:
 		push_error("Attempted to switch to invalid level index: %d" % level_index)
 		return ERR_INVALID_PARAMETER
 	
-	level_spawner.spawn(levels[level_index])
+	if is_multiplayer_authority() and _current_level:
+		_current_level.queue_free()
+	
+	var level := level_spawner.spawn(levels[level_index])
+	_current_level = level
+	
 	return OK
 
 
@@ -38,6 +45,6 @@ func _spawn_level(data : String) -> Node:
 	if level.has_node("SpawnPoint"):
 		player_spawner.player_spawn_point = level.get_node("SpawnPoint").position
 	if level.has_node("LevelProperties"):
-		pass
+		player_spawner.player_components = level.get_node("LevelProperties")._components
 	
 	return level

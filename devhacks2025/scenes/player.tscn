@@ -99,6 +99,18 @@ animations = [{
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath("BodySprite:animation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath("BodySprite/ShellSprite:animation")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath("BodySprite/ShellSprite:visible")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath(".:scale")
+properties/4/spawn = true
+properties/4/replication_mode = 2
 
 [node name="Player" type="CharacterBody2D"]
 scale = Vector2(2, 2)
@@ -129,9 +141,13 @@ script = ExtResource("4_ubodj")
 
 [node name="JumpComponent" type="Node" parent="."]
 script = ExtResource("5_8v8c2")
+double_jump = false
 
 [node name="ApplyForcesComponent" type="Node" parent="."]
 script = ExtResource("7_47jfw")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_lb8gl")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true

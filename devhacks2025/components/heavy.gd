@@ -11,6 +11,9 @@ func _process(delta: float) -> void:
 	
 #every time someone presses and input check for ability 
 func _input(event: InputEvent) -> void:
+	if not is_multiplayer_authority():
+		return
+		
 	if event is InputEventKey and event.pressed and event.keycode == KEY_H:
 		#call sprite change 
 		var snail_sprite = get_parent().get_node("BodySprite")

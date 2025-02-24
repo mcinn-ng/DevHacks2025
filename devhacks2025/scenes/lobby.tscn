@@ -1,8 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://cn1ip2et0hg50"]
+[gd_scene load_steps=3 format=3 uid="uid://cn1ip2et0hg50"]
+
+[ext_resource type="Script" path="res://scripts/lobby.gd" id="1_tn8s6"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vk43d"]
 
 [node name="Lobby" type="Node2D"]
+script = ExtResource("1_tn8s6")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(540, 647)
@@ -13,3 +16,37 @@ shape = SubResource("WorldBoundaryShape2D_vk43d")
 
 [node name="SpawnPoint" type="Marker2D" parent="."]
 position = Vector2(557, 357)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="StartButton" type="Button" parent="CanvasLayer/Control/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Start"
+
+[node name="QuitButton" type="Button" parent="CanvasLayer/Control/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[connection signal="pressed" from="CanvasLayer/Control/HBoxContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/HBoxContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
