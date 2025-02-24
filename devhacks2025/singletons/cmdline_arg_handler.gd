@@ -51,6 +51,8 @@ func handle_address(address : String) -> bool:
 	print("cmd: client default address set to \"%s\"" % address)
 	return true
 
+
+# Credit: https://forum.godotengine.org/t/is-there-any-way-to-pass-arguments-to-the-game-when-running-it-from-the-cli-with-headless-server-version/23228/2
 func parse_command_line_arguments() -> Dictionary:
 	var arguments := {}
 	for argument in OS.get_cmdline_args():
