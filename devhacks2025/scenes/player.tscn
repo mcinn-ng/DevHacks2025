@@ -124,7 +124,7 @@ shape = SubResource("RectangleShape2D_js6gd")
 position = Vector2(1, -4)
 scale = Vector2(0.931945, 1.04722)
 sprite_frames = SubResource("SpriteFrames_sixbi")
-animation = &"Heavy"
+animation = &"Snail"
 autoplay = "Snail"
 
 [node name="ShellSprite" type="AnimatedSprite2D" parent="BodySprite"]
