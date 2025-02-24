@@ -596,4 +596,4 @@ player3 = Array[int]([2])
 player4 = Array[int]([3])
 
 [node name="SpawnPoint" type="Marker2D" parent="."]
-position = Vector2(-4293, -152)
+position = Vector2(-4304, -421)
