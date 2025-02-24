@@ -7,109 +7,127 @@ signal spawn_point_updated
 
 const PLAYER = preload("res://scenes/player.tscn")
 
-
+@export var auto_spawn_players : bool = false
 @export var player_colors : Array[Color] = [ 0x4a70ffff, 0xcc00e3ff, 0xff9757ff, 0x189950ff ]
 @export var player_spawn_point : Vector2 = Vector2.ZERO : set = set_spawn_point
+@export var player_components : Array = [] : set = set_player_components
 
-
-var _peer_indexes : Array[int] = [0, 1, 2, 3]
-var _players := {}
+# player_index -> Player (character)
+var _player_characters : Dictionary = {}
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	spawn_function = _spawn_player
-	if MultiplayerManager.hosting:
+	if MultiplayerManager.is_server():
 		setup_as_host()
 
 
 func _exit_tree() -> void:
-	if multiplayer.peer_connected.is_connected(_on_peer_connected):
-		multiplayer.peer_connected.disconnect(_on_peer_connected)
-	if multiplayer.peer_disconnected.is_connected(_on_peer_disconnected):
-		multiplayer.peer_disconnected.disconnect(_on_peer_disconnected)
+	Util.disconnect_from_signal(MultiplayerManager.peer_connected, _on_peer_connected)
+	Util.disconnect_from_signal(MultiplayerManager.peer_disconnected, _on_peer_disconnected)
 
 
 func setup_as_host() -> void:
-	if not multiplayer.peer_connected.is_connected(_on_peer_connected):
-		multiplayer.peer_connected.connect(_on_peer_connected)
-	if not multiplayer.peer_disconnected.is_connected(_on_peer_disconnected):
-		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	Util.connect_to_signal(MultiplayerManager.peer_connected, _on_peer_connected)
+	Util.connect_to_signal(MultiplayerManager.peer_disconnected, _on_peer_disconnected)
 	
 	_on_peer_connected(MultiplayerManager.DEFAULT_HOST_ID)
-
-
-func set_player_components(id : int, components : Array[int]) -> void:
-	if not _players.has(str(id)):
-		return
-	
-	var typed_components : Array[Player.Component] = []
-	typed_components.append_array(components.map(func(x : int) -> Player.Component: return Player.Component.values()[x]))
-	
-	var player : Player = _players[str(id)]
-	player.set_components.rpc(typed_components)
 
 
 func set_spawn_point(point : Vector2) -> void:
 	player_spawn_point = point
 	
 	if is_multiplayer_authority():
-		for player in _players.values():
-			if player.player_character.is_multiplayer_authority():
-				player.player_character.respawn(player_spawn_point)
+		for player in _player_characters.values():
+			if player.is_multiplayer_authority():
+				player.respawn(player_spawn_point)
 			else:
-				player.player_character.respawn.rpc_id(player.player_character.get_multiplayer_authority(), player_spawn_point)
+				player.respawn.rpc_id(player.get_multiplayer_authority(), player_spawn_point)
 	
 	spawn_point_updated.emit()
 
 
+func set_player_components(components : Array):
+	player_components = components
+	for player : Player in _player_characters.values():
+		if player.player_index >= 0 and player.player_index <= components.size():
+			player.components = components[player.player_index]
+
+
+func has_player_character(peer_id : int) -> bool:
+	return str(peer_id) in _player_characters.keys()
+
+
+func get_player_character_by_id(peer_id : int) -> Player:
+	return get_player_character_by_index(MultiplayerManager.get_player_index(peer_id))
+
+
+func get_player_character_by_index(player_index : int) -> Player:
+	var str_index := str(player_index)
+	if _player_characters.has(str_index):
+		return _player_characters[str_index]
+	else:
+		return null
+
+
 #don't use this function. Use the `spawn()` function instead
-func _spawn_player(data : Dictionary) -> Node:
-	var player = PLAYER.instantiate()
+func _spawn_player(data : Dictionary) -> Player:
+	var player : Player = PLAYER.instantiate()
 	
-	if data.has("id"):
-		player.name = str(data.id)
-	if data.has("spawn_point"):
-		player.position = data.spawn_point
-	if data.has("color"):
-		player.color = data.color
+	player.name = str(data.id)
+	player.position = data.spawn_point
+	player.color = data.color
+	player.player_index = data.player_index
 	
-	var wall_break_component = load("res://components/wall_break_component.tscn").instantiate()
-	player.add_child(wall_break_component)
+	_player_characters[str(player.player_index)] = player
 	
 	return player
 
 
-
-func _on_peer_connected(id : int) -> void:
-	if not player_spawn_point:
-		await spawn_point_updated
+func _spawn_player_for_each_peer() -> void:
+	var peers := multiplayer.get_peers()
+	var peers_without_character := Array(peers).filter(
+		func(id : int) -> bool:
+			return not has_player_character(id)
+	)
 	
-	var peer_index : int = _peer_indexes.pop_front()
-	if _peer_indexes.is_empty():
-		_peer_indexes.append(peer_index + 1)
+	for peer in peers_without_character:
+		_spawn_player_for_peer(peer)
+
+
+func _spawn_player_for_peer(peer_id : int) -> Player:
+	var player_index : int = MultiplayerManager.get_player_index(peer_id)
 	
 	var spawn_data := {
-		"id" : id,
-		"color" : _get_color(peer_index),
+		"id" : peer_id,
+		"player_index" : player_index,
+		"color" : _get_color(player_index),
 		"spawn_point" : player_spawn_point,
 	}
 	
-	var player := spawn(spawn_data)
-	_players[str(id)] = SessionPeer.new(
-		id,
-		peer_index,
-		player
-	)
+	var player : Player = spawn(spawn_data)
+	
+	return player
+
+@rpc("authority", "call_local", "reliable")
+func _despawn_player(peer_id : int) -> void:
+	var str_index := str(MultiplayerManager.get_player_index(peer_id))
+	if _player_characters.has(str_index):
+		var character : Player = _player_characters[str_index]
+		if is_instance_valid(character):
+			character.queue_free()
+		_player_characters.erase(str_index)
+
+
+func _on_peer_connected(id : int) -> void:
+	if auto_spawn_players:
+		_spawn_player_for_peer(id)
 
 
 func _on_peer_disconnected(id : int) -> void:
-	if _players.has(str(id)):
-		var session_peer : SessionPeer = _players[str(id)]
-		if is_instance_valid(session_peer.player_character):
-			session_peer.player_character.queue_free()
-		_peer_indexes.push_front(session_peer.peer_index)
-		_players.erase(str(id))
+	if MultiplayerManager.is_server():
+		_despawn_player.rpc(id)
 
 
 func _get_color(index : int) -> Color:
@@ -121,15 +139,3 @@ func _get_color(index : int) -> Color:
 
 func _random_color() -> Color:
 	return Color(randf(), randf(),randf())
-
-
-class SessionPeer:
-	var id : int
-	var peer_index : int
-	var player_character : CharacterBody2D
-	
-	@warning_ignore("shadowed_variable")
-	func _init(peer_id : int, peer_index : int, character : CharacterBody2D) -> void:
-		self.id = peer_id
-		self.peer_index = peer_index
-		self.player_character = character

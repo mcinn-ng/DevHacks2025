@@ -12,9 +12,6 @@ const LOBBY_INDEX : int = 0
 
 @onready var level_spawner: MultiplayerSpawner = $LevelSpawner
 @onready var player_spawner: PlayerSpawner = $PlayerSpawner
-@onready var start_button: Button = $CanvasLayer/Control/HBoxContainer/VBoxContainer/StartButton
-@onready var quit_button: Button = $CanvasLayer/Control/HBoxContainer/VBoxContainer/QuitButton
-@onready var control: Control = $CanvasLayer/Control
 
 
 var _current_level : Node
@@ -23,10 +20,8 @@ var _current_level : Node
 func _ready() -> void:
 	level_spawner.spawn_function = _spawn_level
 	
-	if MultiplayerManager.hosting:
+	if MultiplayerManager.is_server():
 		switch_to_level(LOBBY_INDEX)
-	else:
-		start_button.hide()
 
 
 func switch_to_level(level_index : int) -> Error:
@@ -50,24 +45,6 @@ func _spawn_level(data : String) -> Node:
 	if level.has_node("SpawnPoint"):
 		player_spawner.player_spawn_point = level.get_node("SpawnPoint").position
 	if level.has_node("LevelProperties"):
-		for session_peer in player_spawner._players.values():
-			session_peer.player_character.set_components(level.get_node("LevelProperties").get_player_components(session_peer.peer_index))
+		player_spawner.player_components = level.get_node("LevelProperties")._components
 	
 	return level
-
-
-
-
-func _on_start_button_pressed() -> void:
-	hide_ui.rpc()
-	switch_to_level(LOBBY_INDEX + 1)
-
-
-func _on_quit_button_pressed() -> void:
-	MultiplayerManager.disconnect_session()
-	get_tree().change_scene_to_file("res://menu_screens/main_menu.tscn")
-
-
-@rpc("any_peer", "reliable", "call_local")
-func hide_ui() -> void:
-	control.hide()

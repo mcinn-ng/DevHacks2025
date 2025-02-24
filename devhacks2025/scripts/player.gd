@@ -13,13 +13,14 @@ enum Component {
 	HEAVY
 }
 
+
 @export var color : Color = Color.WHITE : set = set_color
+@export var player_index : int = 0
 
 
 @onready var body_sprite: AnimatedSprite2D = $BodySprite
 @onready var shell_sprite: AnimatedSprite2D = $BodySprite/ShellSprite
 @onready var camera_2d: Camera2D = $Camera2D
-
 
 var components : Array[Component] = [] : set = set_components
 
@@ -66,19 +67,19 @@ func respawn(pos : Vector2) -> void:
 
 
 func _add_component(component : Component) -> void:
-		match component:
-			Component.DOUBLE_JUMP:
-				var jump : JumpComponent = get_node("JumpComponent")
-				jump.double_jump = true
-			Component.SHRINK:
-				var shrink : ShrinkComponent = get_node("ShrinkComponent")
-				add_child(shrink, true)
-			Component.WALL_BREAK:
-				var wall_break : WallBreakComponent = WALL_BREAK_COMPONENT.instantiate()
-				add_child(wall_break, true)
-			Component.HEAVY:
-				var heavy = HEAVY_COMPONENT.instantiate()
-				add_child(heavy, true)
+	match component:
+		Component.DOUBLE_JUMP:
+			var jump : JumpComponent = get_node("JumpComponent")
+			jump.double_jump = true
+		Component.SHRINK:
+			var shrink : ShrinkComponent = ShrinkComponent.new()
+			_add_child_component(shrink)
+		Component.WALL_BREAK:
+			var wall_break : WallBreakComponent = WALL_BREAK_COMPONENT.instantiate()
+			_add_child_component(wall_break)
+		Component.HEAVY:
+			var heavy = HEAVY_COMPONENT.instantiate()
+			_add_child_component(heavy)
 
 
 func _remove_component(component : Component) -> void:
@@ -89,10 +90,15 @@ func _remove_component(component : Component) -> void:
 		Component.SHRINK:
 			var shrink : ShrinkComponent = get_node("ShrinkComponent")
 			shrink.queue_free()
-			pass
 		Component.WALL_BREAK:
 			var wall_break : WallBreakComponent = get_node("WallBreakComponent")
 			wall_break.queue_free()
 		Component.HEAVY:
 			var heavy = get_node("HeavyComponent")
 			heavy.queue_free()
+
+
+func _add_child_component(component : Node) -> void:
+	add_child(component, true)
+	component.owner = self
+	component.set_multiplayer_authority(get_multiplayer_authority())

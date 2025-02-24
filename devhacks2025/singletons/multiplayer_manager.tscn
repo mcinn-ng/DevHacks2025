@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bn4kd1xmn2vq1"]
+
+[ext_resource type="Script" path="res://singletons/multiplayer_manager.gd" id="1_hh4f6"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_o846o"]
+properties/0/path = NodePath(".:player_indexes")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+
+[node name="MultiplayerManager" type="Node"]
+script = ExtResource("1_hh4f6")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_o846o")
