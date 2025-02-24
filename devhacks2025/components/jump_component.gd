@@ -26,6 +26,6 @@ func _process(_delta: float) -> void:
 	
 	# Handle jump.
 	var on_floor := player.is_on_floor()
-	if Input.is_action_just_pressed("ui_accept") and (on_floor or (double_jump and not _double_jump_used)):
+	if Input.is_action_just_pressed("jump") and (on_floor or (double_jump and not _double_jump_used)):
 		_double_jump_used = not on_floor
 		player.velocity.y = DEFAULT_JUMP_VELOCITY
