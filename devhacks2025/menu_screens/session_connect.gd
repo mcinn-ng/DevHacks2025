@@ -10,11 +10,6 @@ func _ready() -> void:
 		session_id_field.text = MultiplayerManager.client_default_address
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
 func _on_connect_button_pressed() -> void:
 	var host_address := session_id_field.get_text()
 	var error := MultiplayerManager.connect_to_host(host_address)

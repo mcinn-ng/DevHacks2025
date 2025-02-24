@@ -10,7 +10,7 @@ var _nearby_walls : Array[BreakableWall] = []
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
 	

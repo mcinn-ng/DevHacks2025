@@ -12,11 +12,6 @@ func _ready() -> void:
 	_update_components_array()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
 func get_components() -> Array:
 	_update_components_array()
 	return _components
