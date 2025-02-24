@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cijlev5a57oud"]
+[gd_scene load_steps=23 format=3 uid="uid://cijlev5a57oud"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_yu4dx"]
 [ext_resource type="Texture2D" uid="uid://c0qyqmefccmua" path="res://Assets/Character_Sprites/pixilart-sprite.png" id="4_0x8st"]
@@ -7,7 +7,8 @@
 [ext_resource type="Script" path="res://components/jump_component.gd" id="5_8v8c2"]
 [ext_resource type="Script" path="res://components/apply_forces_component.gd" id="7_47jfw"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_js6gd"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hnis0"]
+resource_local_to_scene = true
 size = Vector2(20, 17.5)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bx8rp"]
@@ -21,6 +22,18 @@ region = Rect2(53, 71, 30, 30)
 [sub_resource type="AtlasTexture" id="AtlasTexture_2rfya"]
 atlas = ExtResource("4_0x8st")
 region = Rect2(83, 71, 30, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mrvk5"]
+atlas = ExtResource("4_0x8st")
+region = Rect2(20, 180, 34, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g73d7"]
+atlas = ExtResource("4_0x8st")
+region = Rect2(54, 180, 34, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ll4yj"]
+atlas = ExtResource("4_0x8st")
+region = Rect2(88, 180, 34, 14)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_juvdl"]
 atlas = ExtResource("4_0x8st")
@@ -52,6 +65,20 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_mrvk5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g73d7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ll4yj")
+}],
+"loop": true,
+"name": &"Shrink",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_juvdl")
 }, {
 "duration": 1.0,
@@ -65,6 +92,10 @@ animations = [{
 "speed": 4.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_3sc4d"]
+atlas = ExtResource("4_0x8st")
+region = Rect2(23, 162, 25, 13)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_8jmie"]
 atlas = ExtResource("4_0x8st")
 region = Rect2(23, 55, 17, 15)
@@ -75,6 +106,14 @@ region = Rect2(24, 55, 17, 15)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rmnou"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3sc4d")
+}],
+"loop": true,
+"name": &"Shrink",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_8jmie")
@@ -117,8 +156,7 @@ scale = Vector2(2, 2)
 script = ExtResource("1_yu4dx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -1.25)
-shape = SubResource("RectangleShape2D_js6gd")
+shape = SubResource("RectangleShape2D_hnis0")
 
 [node name="BodySprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(1, -4)

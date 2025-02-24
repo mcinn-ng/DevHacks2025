@@ -21,6 +21,8 @@ enum Component {
 @onready var body_sprite: AnimatedSprite2D = $BodySprite
 @onready var shell_sprite: AnimatedSprite2D = $BodySprite/ShellSprite
 @onready var camera_2d: Camera2D = $Camera2D
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+
 
 var components : Array[Component] = [] : set = set_components
 
@@ -64,6 +66,7 @@ func respawn(pos : Vector2) -> void:
 		return
 	
 	position = pos
+	velocity = Vector2.ZERO
 
 
 func _add_component(component : Component) -> void:
@@ -73,6 +76,7 @@ func _add_component(component : Component) -> void:
 			jump.double_jump = true
 		Component.SHRINK:
 			var shrink : ShrinkComponent = ShrinkComponent.new()
+			shrink.name = "ShrinkComponent"
 			_add_child_component(shrink)
 		Component.WALL_BREAK:
 			var wall_break : WallBreakComponent = WALL_BREAK_COMPONENT.instantiate()
@@ -89,6 +93,7 @@ func _remove_component(component : Component) -> void:
 			jump.double_jump = false
 		Component.SHRINK:
 			var shrink : ShrinkComponent = get_node("ShrinkComponent")
+			shrink.small = false
 			shrink.queue_free()
 		Component.WALL_BREAK:
 			var wall_break : WallBreakComponent = get_node("WallBreakComponent")
