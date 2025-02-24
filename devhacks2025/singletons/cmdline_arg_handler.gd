@@ -1,20 +1,29 @@
 extends Node
 
-const RICH_ERROR_COLOR := "red3"
+
+const CUSTOM_ARG_PREFIX := "++"
+
+const RICH_ERROR_COLOR := "#e74c3c"
 const RICH_INFO_COLOR := "dodger_blue"
 
 const CMD_QUICKSTART := "quickstart"
-const QUICKSTART_AS_CLIENT := "client"
-const QUICKSTART_AS_HOST := "host"
+const QUICKSTART_OPTIONS := {
+	"client" : "res://menu_screens/session_connect.tscn",
+	"host" : "res://menu_screens/session_host.tscn",
+	# INFO: extend this to allow hopping to a specific scene on startup
+}
 
-const CMD_DEBUG_ADDRESSS := "address" 
+const CMD_DEFAULT_ADDRESS := "address" 
+const CUSTOM_VALID_ADDRESSES := [
+	"localhost",
+]
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var args := parse_command_line_arguments()
 	for key in args.keys():
-		handle_command(key, args[key])
+		handle_command(key.trim_prefix(CUSTOM_ARG_PREFIX), args[key])
 
 
 func handle_command(cmd : String, args : String) -> void:
@@ -22,60 +31,77 @@ func handle_command(cmd : String, args : String) -> void:
 	match cmd:
 		CMD_QUICKSTART:
 			handled = handle_quickstart(args)
-		CMD_DEBUG_ADDRESSS:
+		CMD_DEFAULT_ADDRESS:
 			handled = handle_address(args)
 		# INFO:
-			# Add more arguments as seen above if desired
-		
+			# Add additional custom flags/options as needed
 		_:
-			if not (cmd.begins_with("res") and cmd.ends_with(".tscn")):
-				print_error("Invalid command line option \"%s\" (--%s%s" % [cmd, cmd, ")" if (not args) or args.is_empty() else "=%s)" % args])
+			print_error("Invalid command line option \"%s\" (%s%s%s" % [cmd, CUSTOM_ARG_PREFIX, cmd, ")" if (not args) or args.is_empty() else "=%s)" % args])
 			return
 	
 	if not handled:
 		if args and not args.is_empty():
-			print_error("Invalid command line argument \"%s\" (--%s=%s)" % [args, cmd, args])
+			print_error("Invalid command line argument \"%s\" (%s%s=%s)" % [args, CUSTOM_ARG_PREFIX, cmd, args])
 		else:
-			print_error("No args specified for command line option (--%s)" % cmd)
+			print_error("No args specified for command line option (%s%s)" % [CUSTOM_ARG_PREFIX, cmd])
 
 
-func handle_quickstart(arg_value : String) -> bool:
-	match arg_value:
-		QUICKSTART_AS_CLIENT:
-			print_info("quickstarting as client")
-			get_tree().change_scene_to_file.call_deferred("res://menu_screens/session_connect.tscn")
-		QUICKSTART_AS_HOST:
-			print_info("quickstarting as host")
-			get_tree().change_scene_to_file.call_deferred("res://menu_screens/session_host.tscn")
-		_:
-			return false
+func handle_quickstart(arg : String) -> bool:
+	if not QUICKSTART_OPTIONS.has(arg):
+		return false
+	
+	var scene_path : String = QUICKSTART_OPTIONS[arg]
+	var scene
+	
+	if ResourceLoader.exists(scene_path):
+		scene = ResourceLoader.load(scene_path, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP)
+	
+	if (not scene) or not (scene is PackedScene):
+		print_error("quickstart option is linked to an invalid path: \"%s=%s\"" % [arg, scene_path])
+		return true
+	
+	print_info("quickstart mode: %s" % arg)
+	get_tree().change_scene_to_file.call_deferred(scene_path)
+	
 	return true
 
 
 func handle_address(address : String) -> bool:
-	if address != "localhost" and not address.is_valid_ip_address():
+	if not (address in CUSTOM_VALID_ADDRESSES) and not address.is_valid_ip_address():
 		return false
 	MultiplayerManager.client_default_address = address
-	print_info("client default address set to \"%s\"" % address)
+	print_info("default address set: %s" % address)
 	return true
 
 
 func parse_command_line_arguments() -> Dictionary:
 	var arguments = {}
-	for argument in OS.get_cmdline_args():
+	var custom_args : Array[String] = get_custom_cmd_line_args()
+	for argument in custom_args:
 		if argument.contains("="):
 			var key_value = argument.split("=")
-			arguments[key_value[0].trim_prefix("--")] = key_value[1]
+			arguments[key_value[0]] = key_value[1]
 		else:
 			# Options without an argument will be present in the dictionary,
 			# with the value set to an empty string.
-			arguments[argument.trim_prefix("--")] = ""
+			arguments[argument] = ""
 	return arguments
 
 
+func get_custom_cmd_line_args() -> Array[String]:
+	var args : Array = Array(OS.get_cmdline_args())
+	var custom_args : Array[String] = []
+	custom_args.assign(args.filter(is_custom_arg))
+	return custom_args
+
+
+func is_custom_arg(arg : String) -> bool:
+	return arg.begins_with(CUSTOM_ARG_PREFIX)
+
+
 func print_info(info : String) -> void:
-	print_rich("[color=%s]cmd: [/color]" % RICH_INFO_COLOR, info)
+	print_rich("[color=%s][cmd] [/color]" % RICH_INFO_COLOR, info)
 
 
 func print_error(error : String) -> void:
-	print_rich("[color=%s]cmd: [/color]" % RICH_ERROR_COLOR, error)
+	print_rich("[color=%s][cmd] [/color]" % RICH_ERROR_COLOR, error)
