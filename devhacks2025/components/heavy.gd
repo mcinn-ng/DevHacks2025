@@ -9,7 +9,7 @@ func _input(event: InputEvent) -> void:
 	if not is_multiplayer_authority():
 		return
 		
-	if event is InputEventKey and event.pressed and event.keycode == KEY_H:
+	if event.is_action_pressed("use_heavy"):
 		#call sprite change 
 		var snail_sprite = get_parent().get_node("BodySprite")
 		var shell_sprite = get_parent().get_node("BodySprite/ShellSprite")

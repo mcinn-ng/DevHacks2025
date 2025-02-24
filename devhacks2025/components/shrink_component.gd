@@ -18,7 +18,7 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if !is_multiplayer_authority():
 		return
-	if event.is_action("Crawl"):
+	if event.is_action("shrink"):
 		set_small.rpc(event.is_pressed())
 
 

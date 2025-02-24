@@ -26,18 +26,20 @@ enum Component {
 
 var components : Array[Component] = [] : set = set_components
 
-
-func _enter_tree() -> void:
-	if name != "Player":
-		set_multiplayer_authority(name.to_int())
-		
+var _prev_respawn := Vector2.ZERO
 
 
 func _ready() -> void:
 	_update_body_color()
-	if name != "Player" and is_multiplayer_authority():
+	if is_multiplayer_authority():
 		camera_2d.make_current()
 
+
+func _input(event: InputEvent) -> void:
+	if not is_multiplayer_authority():
+		return
+	if event.is_action("reset"):
+		respawn(_prev_respawn)
 
 
 func set_color(value : Color) -> void:
@@ -67,6 +69,8 @@ func respawn(pos : Vector2) -> void:
 	
 	position = pos
 	velocity = Vector2.ZERO
+	
+	_prev_respawn = pos
 
 
 func _add_component(component : Component) -> void:

@@ -79,6 +79,7 @@ func _spawn_player(data : Dictionary) -> Player:
 	player.position = data.spawn_point
 	player.color = data.color
 	player.player_index = data.player_index
+	player.set_multiplayer_authority(data.id)
 	
 	_player_characters[str(player.player_index)] = player
 	
