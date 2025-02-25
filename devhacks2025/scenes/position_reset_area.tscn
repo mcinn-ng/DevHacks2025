@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgitb5t3h2mca"]
+
+[ext_resource type="Script" path="res://scripts/player_reset_area.gd" id="1_na87n"]
+
+[node name="PositionResetArea" type="Area2D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_na87n")
+
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

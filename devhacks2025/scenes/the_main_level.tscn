@@ -1,11 +1,14 @@
-[gd_scene load_steps=22 format=3 uid="uid://daimj281vqhhg"]
+[gd_scene load_steps=23 format=3 uid="uid://daimj281vqhhg"]
 
+[ext_resource type="PackedScene" uid="uid://bgitb5t3h2mca" path="res://scenes/position_reset_area.tscn" id="1_lnkln"]
 [ext_resource type="Texture2D" uid="uid://b3g8fw5pkji1r" path="res://Assets/Platformer Art Complete Pack/Base pack/Tiles/tiles_spritesheet.png" id="2_ixaqv"]
 [ext_resource type="Script" path="res://scenes/tile_map.gd" id="3_nxhde"]
 [ext_resource type="Texture2D" uid="uid://biaad1phgpp8c" path="res://Assets/Platformer Art Complete Pack/Candy expansion/sheet.png" id="4_f56wj"]
 [ext_resource type="PackedScene" path="res://scenes/moving_platform.tscn" id="5_8uen1"]
 [ext_resource type="PackedScene" uid="uid://dcg1fgjatqetp" path="res://scenes/breakable_wall.tscn" id="6_uas81"]
 [ext_resource type="PackedScene" uid="uid://d11t75jp1f4b7" path="res://levels/level_properties.tscn" id="7_uijvr"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_8mgts"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sqbbv"]
 texture = ExtResource("2_ixaqv")
@@ -290,8 +293,6 @@ _data = {
 "move": SubResource("Animation_8vume")
 }
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_idw7n"]
-
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v514m"]
 texture = ExtResource("2_ixaqv")
 separation = Vector2i(2, 2)
@@ -519,7 +520,17 @@ custom_data_layer_1/name = "is_breakable"
 custom_data_layer_1/type = 1
 sources/0 = SubResource("TileSetAtlasSource_mgfb5")
 
-[node name="TheMainLevel" type="Area2D"]
+[node name="TheMainLevel" type="Node2D"]
+
+[node name="WorldFloor" parent="." node_paths=PackedStringArray("reset_marker") instance=ExtResource("1_lnkln")]
+reset_marker = NodePath("HightIndicator")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldFloor"]
+position = Vector2(535, 1662)
+shape = SubResource("WorldBoundaryShape2D_8mgts")
+
+[node name="HightIndicator" type="Marker2D" parent="WorldFloor"]
+position = Vector2(2, -216)
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(0, 1)
@@ -550,12 +561,6 @@ libraries = {
 "": SubResource("AnimationLibrary_i2aeh")
 }
 autoplay = "move"
-
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(-4, 377)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-shape = SubResource("WorldBoundaryShape2D_idw7n")
 
 [node name="TileMap2" type="TileMap" parent="."]
 position = Vector2(39, 1)

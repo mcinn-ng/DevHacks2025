@@ -1,3 +1,4 @@
+@tool
 class_name PlayerSpawner
 extends MultiplayerSpawner
 
@@ -7,18 +8,32 @@ signal spawn_point_updated
 
 const PLAYER = preload("res://scenes/player.tscn")
 
+## The level spawner used to update spawn points and player components on level changes.
+@export var level_spawner : LevelSpawner : set = set_level_spawner
+## Spawn players immediately when they connect to the host.
 @export var auto_spawn_players : bool = false
+## Respawn players at the spawn point immediately when a level is started.
+@export var auto_respawn_players : bool = false
+
+@export_group("Player Properties", "player")
 @export var player_colors : Array[Color] = [ 0x4a70ffff, 0xcc00e3ff, 0xff9757ff, 0x189950ff ]
-@export var player_spawn_point : Vector2 = Vector2.ZERO : set = set_spawn_point
-@export var player_components : Array = [] : set = set_player_components
+@export var player_spawn_point : Marker2D = Marker2D.new() : set = set_spawn_point
+@export var player_components : Array[Array] = [] : set = set_player_components
 
 # player_index -> Player (character)
 var _player_characters : Dictionary = {}
 
 
+func _init() -> void:
+	spawn_function = _spawn_player
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	spawn_function = _spawn_player
+	if Engine.is_editor_hint():
+		update_configuration_warnings()
+		return
+	
 	if MultiplayerManager.is_server():
 		setup_as_host()
 
@@ -35,24 +50,44 @@ func setup_as_host() -> void:
 	_on_peer_connected(MultiplayerManager.DEFAULT_HOST_ID)
 
 
-func set_spawn_point(point : Vector2) -> void:
+func set_spawn_point(point : Marker2D) -> void:
+	if not point:
+		point = Marker2D.new()
+	
 	player_spawn_point = point
 	
-	if is_multiplayer_authority():
-		for player in _player_characters.values():
-			if player.is_multiplayer_authority():
-				player.respawn(player_spawn_point)
-			else:
-				player.respawn.rpc_id(player.get_multiplayer_authority(), player_spawn_point)
+	if MultiplayerManager.is_server() and auto_respawn_players:
+		respawn_all_players()
 	
 	spawn_point_updated.emit()
 
 
+func respawn_all_players() -> void:
+	if player_spawn_point and is_multiplayer_authority():
+		for player in _player_characters.values():
+			if player.is_multiplayer_authority():
+				player.respawn(player_spawn_point.position)
+			else:
+				player.respawn.rpc_id(player.get_multiplayer_authority(), player_spawn_point.position)
+
+
 func set_player_components(components : Array):
-	player_components = components
+	player_components.assign(components)
 	for player : Player in _player_characters.values():
-		if player.player_index >= 0 and player.player_index <= components.size():
-			player.components = components[player.player_index]
+		if player.player_index >= 0 and player.player_index < player_components.size():
+			player.components = player_components[player.player_index]
+
+
+func set_level_spawner(spawner : LevelSpawner) -> void:
+	if level_spawner:
+		Util.disconnect_from_signal(level_spawner.level_changed, _on_level_changed)
+	
+	level_spawner = spawner
+	
+	if Engine.is_editor_hint():
+		update_configuration_warnings()
+	elif level_spawner:
+		Util.connect_to_signal(level_spawner.level_changed, _on_level_changed)
 
 
 func has_player_character(peer_id : int) -> bool:
@@ -69,6 +104,10 @@ func get_player_character_by_index(player_index : int) -> Player:
 		return _player_characters[str_index]
 	else:
 		return null
+
+
+func get_spawn_position() -> Vector2:
+	return player_spawn_point.position if player_spawn_point else Vector2.ZERO
 
 
 #don't use this function. Use the `spawn()` function instead
@@ -104,12 +143,13 @@ func _spawn_player_for_peer(peer_id : int) -> Player:
 		"id" : peer_id,
 		"player_index" : player_index,
 		"color" : _get_color(player_index),
-		"spawn_point" : player_spawn_point,
+		"spawn_point" : get_spawn_position(),
 	}
 	
 	var player : Player = spawn(spawn_data)
 	
 	return player
+
 
 @rpc("authority", "call_local", "reliable")
 func _despawn_player(peer_id : int) -> void:
@@ -140,3 +180,17 @@ func _get_color(index : int) -> Color:
 
 func _random_color() -> Color:
 	return Color(randf(), randf(),randf())
+
+
+func _on_level_changed() -> void:
+	player_spawn_point = level_spawner.get_spawn_point()
+	player_components = level_spawner.get_level_components()
+
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings := PackedStringArray()
+	
+	if not level_spawner:
+		warnings.append("Level spawner is not set.")
+	
+	return warnings
