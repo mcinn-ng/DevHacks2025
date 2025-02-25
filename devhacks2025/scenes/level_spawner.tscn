@@ -1,5 +1,10 @@
-[gd_scene format=3 uid="uid://dkgwifodpdcx1"]
+[gd_scene load_steps=2 format=3 uid="uid://dkgwifodpdcx1"]
+
+[ext_resource type="Script" path="res://scripts/level_spawner.gd" id="1_6rk3d"]
 
 [node name="LevelSpawner" type="MultiplayerSpawner"]
 _spawnable_scenes = PackedStringArray("res://scenes/lobby.tscn", "res://levels/level_one.tscn")
 spawn_path = NodePath("..")
+script = ExtResource("1_6rk3d")
+
+[connection signal="spawned" from="." to="." method="_on_spawned"]

@@ -22,24 +22,18 @@ enum Component {
 @onready var shell_sprite: AnimatedSprite2D = $BodySprite/ShellSprite
 @onready var camera_2d: Camera2D = $Camera2D
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+@onready var jump_component: JumpComponent = $JumpComponent
 
 
 var components : Array[Component] = [] : set = set_components
 
-var _prev_respawn := Vector2.ZERO
+var spawn_point := Vector2.ZERO
 
 
 func _ready() -> void:
 	_update_body_color()
 	if is_multiplayer_authority():
 		camera_2d.make_current()
-
-
-func _input(event: InputEvent) -> void:
-	if not is_multiplayer_authority():
-		return
-	if event.is_action("reset"):
-		respawn(_prev_respawn)
 
 
 func set_color(value : Color) -> void:
@@ -63,14 +57,13 @@ func set_components(new_components : Array[Component]) -> void:
 
 
 @rpc("any_peer", "reliable", "call_remote")
-func respawn(pos : Vector2) -> void:
+func respawn(pos : Vector2 = spawn_point) -> void:
 	if not is_multiplayer_authority():
 		return
 	
-	position = pos
+	global_position = pos + Vector2.UP * (collision_shape_2d.shape.size.y / 2 - collision_shape_2d.position.y)
 	velocity = Vector2.ZERO
-	
-	_prev_respawn = pos
+	jump_component._double_jump_used = true
 
 
 func _add_component(component : Component) -> void:

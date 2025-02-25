@@ -23,12 +23,12 @@ var _available_indexes : Array[int] = [ 0 ]
 
 func _enter_tree() -> void:
 	Util.connect_to_signal(multiplayer.peer_connected, _on_peer_connected, CONNECT_DEFERRED)
-	Util.connect_to_signal(multiplayer.peer_disconnected, _on_peer_connected, CONNECT_DEFERRED)
+	Util.connect_to_signal(multiplayer.peer_disconnected, _on_peer_disconnected, CONNECT_DEFERRED)
 
 
 func _exit_tree() -> void:
 	Util.disconnect_from_signal(multiplayer.peer_connected, _on_peer_connected)
-	Util.disconnect_from_signal(multiplayer.peer_disconnected, _on_peer_connected)
+	Util.disconnect_from_signal(multiplayer.peer_disconnected, _on_peer_disconnected)
 
 
 func connect_to_host(address : String, port : int = DEFAULT_PORT) -> Error:

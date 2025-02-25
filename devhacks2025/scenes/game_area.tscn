@@ -7,15 +7,19 @@
 [node name="GameArea" type="Node2D"]
 script = ExtResource("1_33qbb")
 
-[node name="LevelSpawner" parent="." instance=ExtResource("1_l8wvf")]
+[node name="LevelSpawner" parent="." node_paths=PackedStringArray("player_spawner") instance=ExtResource("1_l8wvf")]
 _spawnable_scenes = PackedStringArray("res://scenes/lobby.tscn", "res://scenes/the_main_level.tscn")
 spawn_path = NodePath("../Level")
+player_spawner = NodePath("../PlayerSpawner")
 
 [node name="Level" type="Node2D" parent="."]
 
-[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("level_spawner", "player_spawn_point")]
 spawn_path = NodePath("../Players")
 script = ExtResource("2_qijnl")
+level_spawner = NodePath("../LevelSpawner")
 auto_spawn_players = true
+auto_respawn_players = true
+player_spawn_point = NodePath("")
 
 [node name="Players" type="Node2D" parent="."]
