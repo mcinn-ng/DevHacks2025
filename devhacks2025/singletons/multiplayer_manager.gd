@@ -1,14 +1,21 @@
 extends Node
 
-
+## Emitted when this client successfully connects to the server.
+signal connected_to_server()
+## Emmited when this client fails to connect to the server.
+signal connection_failed()
+## Emmitted when this client disconnects from the server.
+signal server_disconnected()
+## Emmitted on the server and all peers when a new peer connects to the multiplayer session.
 signal peer_connected(id : int)
+## Emmitted on the server and all peers when a peer disconnects from the multiplayer session.
 signal peer_disconnected(id : int)
 
 
 const DEFAULT_PORT := 3050
 const DEFAULT_HOST_ID := 1
 
-
+## Dictionary relating peer ids to their player index (loosly indicating the order in which peers connected).
 @export var player_indexes : Dictionary = {}
 
 # Can be overridden using command line arg "++address"
@@ -22,13 +29,19 @@ var _available_indexes : Array[int] = [ 0 ]
 
 
 func _enter_tree() -> void:
-	Util.connect_to_signal(multiplayer.peer_connected, _on_peer_connected, CONNECT_DEFERRED)
-	Util.connect_to_signal(multiplayer.peer_disconnected, _on_peer_disconnected, CONNECT_DEFERRED)
+	Util.connect_to_signal(multiplayer.peer_connected, _on_peer_connected)
+	Util.connect_to_signal(multiplayer.peer_disconnected, _on_peer_disconnected)
+	Util.connect_to_signal(multiplayer.connected_to_server, _on_connected_to_server)
+	Util.connect_to_signal(multiplayer.connection_failed, _on_connection_failed)
+	Util.connect_to_signal(multiplayer.server_disconnected, _on_server_disconnected)
 
 
 func _exit_tree() -> void:
 	Util.disconnect_from_signal(multiplayer.peer_connected, _on_peer_connected)
 	Util.disconnect_from_signal(multiplayer.peer_disconnected, _on_peer_disconnected)
+	Util.disconnect_from_signal(multiplayer.connected_to_server, _on_connected_to_server)
+	Util.disconnect_from_signal(multiplayer.connection_failed, _on_connection_failed)
+	Util.disconnect_from_signal(multiplayer.server_disconnected, _on_server_disconnected)
 
 
 func connect_to_host(address : String, port : int = DEFAULT_PORT) -> Error:
@@ -120,6 +133,19 @@ func _on_peer_disconnected(id : int) -> void:
 			_potential_usage_error("Peer disconnected without being assigned a player index.")
 	
 	peer_disconnected.emit(id)
+
+
+func _on_connected_to_server() -> void:
+	connected_to_server.emit()
+
+
+func _on_server_disconnected() -> void:
+	server_disconnected.emit()
+
+
+func _on_connection_failed() -> void:
+	connection_failed.emit()
+
 
 #incorrect usage involves modifying private variables (starting in "_") or inputting invalid data
 func _potential_usage_error(message : String) -> void:
