@@ -115,10 +115,11 @@ func _spawn_player(data : Dictionary) -> Player:
 	var player : Player = PLAYER.instantiate()
 	
 	player.name = str(data.id)
-	player.position = data.spawn_point
 	player.color = data.color
 	player.player_index = data.player_index
 	player.set_multiplayer_authority(data.id)
+	if data.has("spawn_point"):
+		player.position = data.spawn_point
 	
 	_player_characters[str(player.player_index)] = player
 	

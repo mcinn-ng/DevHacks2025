@@ -24,9 +24,7 @@ func _process(delta: float) -> void:
 func _on_host_button_pressed() -> void:
 	control.hide()
 	MultiplayerManager.setup_server()
-	multiplayer_spawner.setup_as_host()
-	multiplayer.peer_connected.connect(_on_peer_connected)
-	multiplayer_spawner._on_peer_connected(multiplayer.get_unique_id())
+	#multiplayer_spawner.setup_as_host()
 
 
 func _on_connect_button_pressed() -> void:
@@ -44,9 +42,3 @@ func _spawn_player(data : Dictionary) -> Node:
 	player.add_child(wall_break_component)
 	
 	return player
-
-
-func _on_peer_connected(id : int) -> void:
-	multiplayer_spawner.spawn({
-		"id" : id,
-	})

@@ -11,11 +11,11 @@ const DEFAULT_HOST_ID := 1
 
 @export var player_indexes : Dictionary = {}
 
-# Can be overridden using command line arg "--address"
+# Can be overridden using command line arg "++address"
 var client_default_address := ""
 
 
-# Used to keep track of available player indexes
+## Used to keep track of available player indexes
 # example: if there are 4 players and player 2 disconnects, the next player to connect becomes player 2 rather than player 5
 # shifting player indexes is not currently implemented because joining mid-game becomes complicated
 var _available_indexes : Array[int] = [ 0 ]
@@ -59,7 +59,7 @@ func disconnect_session() -> void:
 
 
 func is_active() -> bool:
-	return multiplayer.has_multiplayer_peer() and multiplayer.multiplayer_peer.get_connection_status() != MultiplayerPeer.ConnectionStatus.CONNECTION_DISCONNECTED
+	return multiplayer and multiplayer.has_multiplayer_peer() and multiplayer.multiplayer_peer.get_connection_status() != MultiplayerPeer.ConnectionStatus.CONNECTION_DISCONNECTED
 
 
 func is_server() -> bool:

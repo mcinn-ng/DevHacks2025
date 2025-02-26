@@ -1,13 +1,39 @@
-[gd_scene load_steps=6 format=3 uid="uid://cm0johvsfk0xv"]
+[gd_scene load_steps=12 format=3 uid="uid://cm0johvsfk0xv"]
 
 [ext_resource type="Script" path="res://scripts/test_area.gd" id="1_lxodj"]
 [ext_resource type="PackedScene" uid="uid://dcg1fgjatqetp" path="res://scenes/breakable_wall.tscn" id="2_08ajn"]
 [ext_resource type="Script" path="res://scripts/player_spawner.gd" id="2_xlrgi"]
+[ext_resource type="Texture2D" uid="uid://c0qyqmefccmua" path="res://Assets/Character_Sprites/pixilart-sprite.png" id="4_kcf8v"]
+[ext_resource type="PackedScene" uid="uid://c6h810cn6j3jo" path="res://scenes/physics_authority_delegator.tscn" id="5_xp7m3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j256s"]
 size = Vector2(1154, 82)
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_40ddk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vw052"]
+radius = 33.0151
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iyhrq"]
+atlas = ExtResource("4_kcf8v")
+region = Rect2(25, 56, 13, 13)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_vgnd8"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:angular_velocity")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath(".:linear_velocity")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pvokl"]
+radius = 66.0076
 
 [node name="TestArea" type="Node2D"]
 script = ExtResource("1_lxodj")
@@ -50,10 +76,12 @@ position = Vector2(-2.00003, 0)
 scale = Vector2(1152, 80)
 texture = SubResource("PlaceholderTexture2D_40ddk")
 
-[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("player_spawn_point")]
 _spawnable_scenes = PackedStringArray("res://scenes/player.tscn")
 spawn_path = NodePath("..")
 script = ExtResource("2_xlrgi")
+auto_spawn_players = true
+player_spawn_point = NodePath("")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -94,6 +122,31 @@ position = Vector2(583, 308)
 
 [node name="BreakableWall" parent="." instance=ExtResource("2_08ajn")]
 position = Vector2(954, 528)
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+position = Vector2(901, 263)
+collision_layer = 4
+collision_mask = 7
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource("CircleShape2D_vw052")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
+scale = Vector2(5, 5)
+texture = SubResource("AtlasTexture_iyhrq")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="RigidBody2D"]
+replication_config = SubResource("SceneReplicationConfig_vgnd8")
+visibility_update_mode = 1
+
+[node name="PhysicsAuthorityDelegator" parent="RigidBody2D" node_paths=PackedStringArray("physics_object") instance=ExtResource("5_xp7m3")]
+collision_layer = 2
+collision_mask = 2
+physics_object = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D/PhysicsAuthorityDelegator"]
+shape = SubResource("CircleShape2D_pvokl")
 
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer/ConnectButton" to="." method="_on_connect_button_pressed"]
