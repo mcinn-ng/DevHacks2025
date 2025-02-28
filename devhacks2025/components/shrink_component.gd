@@ -16,9 +16,9 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if !is_multiplayer_authority():
+	if MultiplayerManager.is_session_active() and not is_multiplayer_authority():
 		return
-	if event.is_action("shrink"):
+	if event.is_action("shrink") and not event.is_echo():
 		set_small.rpc(event.is_pressed())
 
 

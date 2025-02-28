@@ -26,7 +26,7 @@ var client_default_address := ""
 # example: if there are 4 players and player 2 disconnects, the next player to connect becomes player 2 rather than player 5
 # shifting player indexes is not currently implemented because joining mid-game becomes complicated
 var _available_indexes : Array[int] = [ 0 ]
-
+var _session_active : bool = false : get = is_session_active
 
 func _enter_tree() -> void:
 	Util.connect_to_signal(multiplayer.peer_connected, _on_peer_connected)
@@ -62,21 +62,23 @@ func setup_server(port : int = DEFAULT_PORT) -> Error:
 	var error := multiplayer_peer.create_server(port)
 	if error == OK:
 		get_tree().get_multiplayer().multiplayer_peer = multiplayer_peer
+		_session_active = true
 		_on_peer_connected(1)
 	return error
 
 
 func disconnect_session() -> void:
-	if is_active():
+	if is_session_active():
 		multiplayer.multiplayer_peer.close()
+		_session_active = false
 
 
-func is_active() -> bool:
-	return multiplayer and multiplayer.has_multiplayer_peer() and multiplayer.multiplayer_peer.get_connection_status() != MultiplayerPeer.ConnectionStatus.CONNECTION_DISCONNECTED
+func is_session_active() -> bool:
+	return _session_active
 
 
 func is_server() -> bool:
-	return is_active() and multiplayer.is_server()
+	return is_session_active() and multiplayer.is_server()
 
 
 func _reset_player_indexes() -> void:
@@ -136,14 +138,17 @@ func _on_peer_disconnected(id : int) -> void:
 
 
 func _on_connected_to_server() -> void:
+	_session_active = true
 	connected_to_server.emit()
 
 
 func _on_server_disconnected() -> void:
+	_session_active = false
 	server_disconnected.emit()
 
 
 func _on_connection_failed() -> void:
+	_session_active = false
 	connection_failed.emit()
 
 

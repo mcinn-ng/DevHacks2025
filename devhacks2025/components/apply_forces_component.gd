@@ -14,8 +14,8 @@ func _ready() -> void:
 
 
 # Called every physics frame. 'delta' is the elapsed time since the previous physics frame.
-func _physics_process(delta: float) -> void:
-	if not is_multiplayer_authority():
+func _physics_process(_delta: float) -> void:
+	if MultiplayerManager.is_session_active() and not is_multiplayer_authority():
 		return
 	
 	if not player.move_and_slide():

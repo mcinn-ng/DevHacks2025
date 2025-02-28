@@ -11,7 +11,7 @@ var _nearby_walls : Array[BreakableWall] = []
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	if not is_multiplayer_authority():
+	if MultiplayerManager.is_session_active() and not is_multiplayer_authority():
 		return
 	
 	if Input.is_action_just_pressed("break_wall"):

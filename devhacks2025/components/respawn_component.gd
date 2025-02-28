@@ -16,7 +16,7 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if not is_multiplayer_authority():
+	if MultiplayerManager.is_session_active() and not is_multiplayer_authority():
 		return
 	if event.is_action_pressed("reset"):
 		player.respawn(get_point_on_surface(player.global_position))
