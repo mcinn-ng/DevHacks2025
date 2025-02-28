@@ -1,7 +1,7 @@
 extends Control
 
 
-@onready var host_button: Button = $VBoxContainer/host_button
+@onready var host_button: Button = $VBoxContainer/HostButton
 
 
 func _on_host_button_pressed() -> void:
