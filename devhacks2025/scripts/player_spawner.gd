@@ -61,7 +61,7 @@ func set_spawn_point(point : Marker2D) -> void:
 	if Engine.is_editor_hint():
 		return
 	
-	if MultiplayerManager.is_server() and auto_respawn_players:
+	if is_node_ready() and MultiplayerManager.is_server() and auto_respawn_players:
 		respawn_all_players()
 	
 	spawn_point_updated.emit()
