@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 
+signal overlay_maximized
 signal overlay_minimized
 
 
@@ -34,7 +35,7 @@ func _input(event: InputEvent) -> void:
 			set_process_input(false)
 			await fade_out()
 			continue_label.hide()
-			overlay_minimized.emit()
+			print("horray!")
 
 
 func set_message(text : String) -> void:
@@ -45,14 +46,14 @@ func is_active() -> bool:
 	return visible and control.modulate.a >= 1
 
 
-func fade_in_then_wait(message : String, custom_blend : int = -1, custom_speed : int = 1, from_end : bool = false) -> Signal:
+func fade_in_then_wait(message : String, custom_blend : int = -1, custom_speed : int = 1, from_end : bool = false) -> void:
 	message_label.text = message
 	continue_label.show()
 	if not is_active():
-		await fade_in(message)
+		await fade_in(message, custom_blend, custom_speed, from_end)
 	waiting_for_input = true
 	set_process_input(true)
-	return overlay_minimized
+	await overlay_minimized
 
 
 func fade_in_then_out_custom(message : String, fade_in_sec : float, hold_sec : float, fade_out_sec : float = fade_in_sec) -> void:
