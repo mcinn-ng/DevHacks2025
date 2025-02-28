@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6h810cn6j3jo"]
+
+[ext_resource type="Script" path="res://scripts/physics_authority_delegator.gd" id="1_lh5lk"]
+
+[node name="PhysicsAuthorityDelegator" type="Area2D"]
+script = ExtResource("1_lh5lk")
+
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
+[connection signal="body_shape_exited" from="." to="." method="_on_body_shape_exited"]

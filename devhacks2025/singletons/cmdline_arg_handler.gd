@@ -5,6 +5,7 @@ const CUSTOM_ARG_PREFIX := "++"
 
 const RICH_ERROR_COLOR := "#e74c3c"
 const RICH_INFO_COLOR := "dodger_blue"
+const RICH_WARNING_COLOR := "#f1c40f"
 
 const CMD_QUICKSTART := "quickstart"
 const QUICKSTART_OPTIONS := {
@@ -49,6 +50,11 @@ func handle_command(cmd : String, args : String) -> void:
 func handle_quickstart(arg : String) -> bool:
 	if not QUICKSTART_OPTIONS.has(arg):
 		return false
+	
+	# Don't quickstart if not launched normally
+	if get_tree().current_scene.name != "MainMenu":
+		print_warning("Ignoring quickstart as current scene != MainMenu")
+		return true
 	
 	var scene_path : String = QUICKSTART_OPTIONS[arg]
 	var scene
@@ -100,8 +106,16 @@ func is_custom_arg(arg : String) -> bool:
 
 
 func print_info(info : String) -> void:
-	print_rich("[color=%s][cmd] [/color]" % RICH_INFO_COLOR, info)
+	print_with_color(info, RICH_INFO_COLOR)
 
 
 func print_error(error : String) -> void:
-	print_rich("[color=%s][cmd] [/color]" % RICH_ERROR_COLOR, error)
+	print_with_color(error, RICH_ERROR_COLOR)
+
+
+func print_warning(waring : String) -> void:
+	print_with_color(waring, RICH_WARNING_COLOR)
+
+
+func print_with_color(msg : String, rich_color : String) -> void:
+	print_rich("[color=%s][cmd] [/color]" % rich_color, msg)

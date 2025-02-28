@@ -6,7 +6,7 @@ extends Node
 
 #every time someone presses and input check for ability 
 func _input(event: InputEvent) -> void:
-	if not is_multiplayer_authority():
+	if MultiplayerManager.is_session_active() and not is_multiplayer_authority():
 		return
 		
 	if event.is_action_pressed("use_heavy"):

@@ -83,7 +83,7 @@ func _spawn_level(data : String) -> Node:
 	return level
 
 # Only called on the peers (Not the authority/host)
-func _on_spawned(node: Node) -> void:
+func _on_spawned(_node: Node) -> void:
 	level_changed.emit()
 
 

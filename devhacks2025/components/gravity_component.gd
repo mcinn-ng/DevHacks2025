@@ -13,7 +13,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if not is_multiplayer_authority():
+	if MultiplayerManager.is_session_active() and not is_multiplayer_authority():
 		return
 	
 	# Add the gravity.

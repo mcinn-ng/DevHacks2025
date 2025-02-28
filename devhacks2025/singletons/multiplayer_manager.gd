@@ -1,34 +1,47 @@
 extends Node
 
-
+## Emitted when this client successfully connects to the server.
+signal connected_to_server()
+## Emmited when this client fails to connect to the server.
+signal connection_failed()
+## Emmitted when this client disconnects from the server.
+signal server_disconnected()
+## Emmitted on the server and all peers when a new peer connects to the multiplayer session.
 signal peer_connected(id : int)
+## Emmitted on the server and all peers when a peer disconnects from the multiplayer session.
 signal peer_disconnected(id : int)
 
 
 const DEFAULT_PORT := 3050
 const DEFAULT_HOST_ID := 1
 
-
+## Dictionary relating peer ids to their player index (loosly indicating the order in which peers connected).
 @export var player_indexes : Dictionary = {}
 
-# Can be overridden using command line arg "--address"
+# Can be overridden using command line arg "++address"
 var client_default_address := ""
 
 
-# Used to keep track of available player indexes
+## Used to keep track of available player indexes
 # example: if there are 4 players and player 2 disconnects, the next player to connect becomes player 2 rather than player 5
 # shifting player indexes is not currently implemented because joining mid-game becomes complicated
 var _available_indexes : Array[int] = [ 0 ]
-
+var _session_active : bool = false : get = is_session_active
 
 func _enter_tree() -> void:
-	Util.connect_to_signal(multiplayer.peer_connected, _on_peer_connected, CONNECT_DEFERRED)
-	Util.connect_to_signal(multiplayer.peer_disconnected, _on_peer_disconnected, CONNECT_DEFERRED)
+	Util.connect_to_signal(multiplayer.peer_connected, _on_peer_connected)
+	Util.connect_to_signal(multiplayer.peer_disconnected, _on_peer_disconnected)
+	Util.connect_to_signal(multiplayer.connected_to_server, _on_connected_to_server)
+	Util.connect_to_signal(multiplayer.connection_failed, _on_connection_failed)
+	Util.connect_to_signal(multiplayer.server_disconnected, _on_server_disconnected)
 
 
 func _exit_tree() -> void:
 	Util.disconnect_from_signal(multiplayer.peer_connected, _on_peer_connected)
 	Util.disconnect_from_signal(multiplayer.peer_disconnected, _on_peer_disconnected)
+	Util.disconnect_from_signal(multiplayer.connected_to_server, _on_connected_to_server)
+	Util.disconnect_from_signal(multiplayer.connection_failed, _on_connection_failed)
+	Util.disconnect_from_signal(multiplayer.server_disconnected, _on_server_disconnected)
 
 
 func connect_to_host(address : String, port : int = DEFAULT_PORT) -> Error:
@@ -49,21 +62,23 @@ func setup_server(port : int = DEFAULT_PORT) -> Error:
 	var error := multiplayer_peer.create_server(port)
 	if error == OK:
 		get_tree().get_multiplayer().multiplayer_peer = multiplayer_peer
+		_session_active = true
 		_on_peer_connected(1)
 	return error
 
 
 func disconnect_session() -> void:
-	if is_active():
+	if is_session_active():
 		multiplayer.multiplayer_peer.close()
+		_session_active = false
 
 
-func is_active() -> bool:
-	return multiplayer.has_multiplayer_peer() and multiplayer.multiplayer_peer.get_connection_status() != MultiplayerPeer.ConnectionStatus.CONNECTION_DISCONNECTED
+func is_session_active() -> bool:
+	return _session_active
 
 
 func is_server() -> bool:
-	return is_active() and multiplayer.is_server()
+	return is_session_active() and multiplayer.is_server()
 
 
 func _reset_player_indexes() -> void:
@@ -120,6 +135,22 @@ func _on_peer_disconnected(id : int) -> void:
 			_potential_usage_error("Peer disconnected without being assigned a player index.")
 	
 	peer_disconnected.emit(id)
+
+
+func _on_connected_to_server() -> void:
+	_session_active = true
+	connected_to_server.emit()
+
+
+func _on_server_disconnected() -> void:
+	_session_active = false
+	server_disconnected.emit()
+
+
+func _on_connection_failed() -> void:
+	_session_active = false
+	connection_failed.emit()
+
 
 #incorrect usage involves modifying private variables (starting in "_") or inputting invalid data
 func _potential_usage_error(message : String) -> void:

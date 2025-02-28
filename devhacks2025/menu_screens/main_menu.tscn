@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://menu_screens/main_menu.gd" id="1_qlnh5"]
 [ext_resource type="FontFile" uid="uid://nri42uqk6g0f" path="res://Assets/Fonts/Better VCR 9.0.1.ttf" id="2_jwvtj"]
 
-[node name="main_menu" type="Control"]
+[node name="MainMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,15 +27,15 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="play_button" type="Button" parent="VBoxContainer"]
+[node name="PlayButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "Play"
 
-[node name="instructions_button" type="Button" parent="VBoxContainer"]
+[node name="InstructionsButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "Instructions"
 
-[node name="quit_button" type="Button" parent="VBoxContainer"]
+[node name="QuitButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "Quit"
 
@@ -55,6 +55,6 @@ text = "CLOCK RACER"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pressed" from="VBoxContainer/play_button" to="." method="_on_play_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/instructions_button" to="." method="_on_instructions_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/quit_button" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/InstructionsButton" to="." method="_on_instructions_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

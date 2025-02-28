@@ -39,6 +39,8 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		return
 	Util.disconnect_from_signal(MultiplayerManager.peer_connected, _on_peer_connected)
 	Util.disconnect_from_signal(MultiplayerManager.peer_disconnected, _on_peer_disconnected)
 
@@ -56,7 +58,10 @@ func set_spawn_point(point : Marker2D) -> void:
 	
 	player_spawn_point = point
 	
-	if MultiplayerManager.is_server() and auto_respawn_players:
+	if Engine.is_editor_hint():
+		return
+	
+	if is_node_ready() and MultiplayerManager.is_server() and auto_respawn_players:
 		respawn_all_players()
 	
 	spawn_point_updated.emit()
@@ -115,10 +120,11 @@ func _spawn_player(data : Dictionary) -> Player:
 	var player : Player = PLAYER.instantiate()
 	
 	player.name = str(data.id)
-	player.position = data.spawn_point
 	player.color = data.color
 	player.player_index = data.player_index
 	player.set_multiplayer_authority(data.id)
+	if data.has("spawn_point"):
+		player.position = data.spawn_point
 	
 	_player_characters[str(player.player_index)] = player
 	
